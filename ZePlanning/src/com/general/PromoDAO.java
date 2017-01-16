@@ -1,0 +1,107 @@
+package com.general;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class PromoDAO extends DAO<Promo> {
+
+	@Override
+	public Promo find(int id) {
+		Promo promo = new Promo();
+		
+		try {
+			 ResultSet result = this .connect
+                     .createStatement(
+                     	ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                         ResultSet.CONCUR_READ_ONLY
+                      ).executeQuery(
+                         "SELECT * FROM promo WHERE id_promo = " + id
+                      );
+if(result.first())
+     promo = new Promo(id, result.getString("nom_promo"), result.getInt("nb_etudiant"), result.getString("description"));
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return promo;
+	}
+
+	@Override
+	public Promo create(Promo obj) {
+		try {
+			 
+			//Vu que nous sommes sous postgres, nous allons chercher manuellement
+			//la prochaine valeur de la séquence correspondant à l'id de notre table
+			ResultSet result = this	.connect
+                                    .createStatement(
+                                    		ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                                    		ResultSet.CONCUR_UPDATABLE
+                                    ).executeQuery(
+                                    		"SELECT NEXTVAL('promo_id_promo_seq') as id"
+                                    );
+			if(result.first()){
+				int id = result.getInt("id");
+    			PreparedStatement prepare = this	.connect
+                                                    .prepareStatement(
+                                                    	"INSERT INTO promo (id_promo, nom_promo, nb_etudiant, description) VALUES(?, ?, ?, ?)"
+                                                    );
+				prepare.setLong(1, id);
+				prepare.setString(2, obj.getNomPromo());
+				prepare.setInt(3, obj.getNbEtudiant());
+				prepare.setString(4, obj.getDescription());
+				
+				prepare.executeUpdate();
+				obj = this.find(id);	
+				
+			}
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
+	    return obj;
+	}
+	
+
+	@Override
+	public Promo update(Promo obj) {
+		try {
+			
+            this .connect	
+                 .createStatement(
+                	ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                	"UPDATE promo SET nom_promo = '" + obj.getNomPromo() + "' "
+                 + "nb_etudiant = '" + obj.getNbEtudiant() + "', "
+                 + "description = '" + obj.getDescription() + "' "
+                 + "WHERE lan_id = " + obj.getIdPromo()
+                 );
+		
+		obj = this.find(obj.getIdPromo());
+    } catch (SQLException e) {
+            e.printStackTrace();
+    }
+    
+    return obj;
+
+	}
+
+	@Override
+	public void delete(Promo obj) {
+		try {
+			
+            this    .connect
+                	.createStatement(
+                         ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                         ResultSet.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                         "DELETE FROM promo WHERE id_promo = " + obj.getIdPromo()
+                    );
+		
+    } catch (SQLException e) {
+            e.printStackTrace();
+    }
+		
+	}
+
+}
