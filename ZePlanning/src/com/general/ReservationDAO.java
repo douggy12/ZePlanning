@@ -21,16 +21,17 @@ public class ReservationDAO extends DAO<Reservation>{
                                                 + "AND join_table.id_promo = promo.id_promo "
                                                 + "AND join_table.id_formateur = formateur.id_formateur "
                                                 + "AND join_table.id_ecole = ecole.id_ecole "
-                                                + "AND reservation.idreservation = " + id
+                                                + "AND reservation.id_reservation = " + id
                                              );
+            
             if(result.first())
             		resa = new Reservation(
             				id,
             				result.getDate("date"), 
             				new SalleDAO().find(result.getInt("id_salle")), 
             				new PromoDAO().find(result.getInt("id_promo")), 
-            				new FormateurDAO().find(result.getInt("id_promo")), 
-            				result.getString("reservation.matiere"), 
+            				new FormateurDAO().find(result.getInt("id_formateur")), 
+            				result.getString("matiere"), 
             				new EcoleDAO().find(result.getInt("id_ecole"))
             				);
             

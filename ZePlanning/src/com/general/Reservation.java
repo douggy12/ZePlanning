@@ -22,6 +22,7 @@ public class Reservation {
 	 */
 	public Reservation(int idResa, Date dateResa, Salle salleResa, Promo promoResa, Formateur formateurResa, String matiereResa, Ecole ecoleResa) {
 		
+		this.idResa = idResa;
 		this.dateResa = dateResa;
 		this.salleResa = salleResa;
 		this.promoResa = promoResa;
@@ -30,6 +31,12 @@ public class Reservation {
 		this.ecoleResa = ecoleResa;
 	}
 	
+	
+	
+	
+
+
+
 	public Reservation(){}
 
 
@@ -102,6 +109,11 @@ public class Reservation {
 		this.idResa = idResa;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Reservation [\nidResa=" + idResa + ", \ndateResa=" + dateResa + ", \nsalleResa=" + salleResa + ", \npromoResa="
+				+ promoResa + ", \nformateurResa=" + formateurResa + ", \nmatiereResa=" + matiereResa + ", \necoleResa="
+				+ ecoleResa + "\n]";
+	}
 
 }

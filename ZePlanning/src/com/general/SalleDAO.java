@@ -15,7 +15,7 @@ public class SalleDAO extends DAO<Salle>{
                                             	ResultSet.TYPE_SCROLL_INSENSITIVE, 
                                                 ResultSet.CONCUR_UPDATABLE
                                              ).executeQuery(
-                                                "SELECT * FROM salle WHERE id_salle = " + id
+                                                "SELECT * FROM salle_de_cours WHERE id_salle = " + id
                                              );
             if(result.first())
             		salle = new Salle(

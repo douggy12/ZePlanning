@@ -36,6 +36,12 @@ public class Formateur {
 	public void setIdFormateur(int idFormateur) {
 		this.idFormateur = idFormateur;
 	}
+
+	@Override
+	public String toString() {
+		return "Formateur [idFormateur=" + idFormateur + ", nomFormateur=" + nomFormateur + ", prenomFormateur="
+				+ prenomFormateur + "]";
+	}
 	
 	
 	

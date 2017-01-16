@@ -43,6 +43,12 @@ public class Promo {
 	public void setIdPromo(int idPromo) {
 		this.idPromo = idPromo;
 	}
+
+	@Override
+	public String toString() {
+		return "Promo [idPromo=" + idPromo + ", nomPromo=" + nomPromo + ", nbEtudiant=" + nbEtudiant + ", description="
+				+ description + "]";
+	}
 	
 	
 

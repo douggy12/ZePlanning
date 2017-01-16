@@ -75,6 +75,13 @@ public class Salle {
 	public void setIdSalle(int idSalle) {
 		this.idSalle = idSalle;
 	}
+
+	@Override
+	public String toString() {
+		return "Salle [idSalle=" + idSalle + ", numSalle=" + numSalle + ", nbPC=" + nbPC + ", nbBureaux=" + nbBureaux
+				+ ", nbChaises=" + nbChaises + ", videoProjecteur=" + videoProjecteur + ", tableau=" + tableau
+				+ ", nomSalle=" + nomSalle + "]";
+	}
 	
 	
 
