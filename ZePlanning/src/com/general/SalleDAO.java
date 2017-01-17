@@ -19,7 +19,7 @@ public class SalleDAO extends DAO<Salle>{
                                              );
             if(result.first())
             		salle = new Salle(
-                                        id, 
+                                        
                                         result.getInt("num_salle"),
                                         result.getInt("nb_pc"),
                                         result.getInt("nb_bureaux"),

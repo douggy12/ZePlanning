@@ -19,7 +19,7 @@ public class PromoDAO extends DAO<Promo> {
                          "SELECT * FROM promo WHERE id_promo = " + id
                       );
 if(result.first())
-     promo = new Promo(id, result.getString("nom_promo"), result.getInt("nb_etudiant"), result.getString("description"));
+     promo = new Promo(result.getString("nom_promo"), result.getInt("nb_etudiant"), result.getString("description"));
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();

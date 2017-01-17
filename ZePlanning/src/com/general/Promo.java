@@ -10,8 +10,8 @@ public class Promo {
 	 * @param nbEtudiant
 	 * @param description
 	 */
-	public Promo(int idPromo,String nomPromo, int nbEtudiant, String description) {
-		this.setIdPromo(idPromo);
+	public Promo(String nomPromo, int nbEtudiant, String description) {
+		
 		this.nomPromo = nomPromo;
 		this.nbEtudiant = nbEtudiant;
 		this.description = description;

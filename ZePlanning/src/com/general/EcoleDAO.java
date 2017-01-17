@@ -15,7 +15,7 @@ public class EcoleDAO extends DAO<Ecole> {
 					.executeQuery("SELECT * FROM ecole WHERE id_ecole = " + id);
 			
 			if(result.first()){
-				ecole = new Ecole(id, result.getString("nom_ecole"), result.getString("ville_ecole"));
+				ecole = new Ecole(result.getString("nom_ecole"), result.getString("ville_ecole"));
 			}
 			
 		}catch (SQLException e){

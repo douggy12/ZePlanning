@@ -7,9 +7,9 @@ public class Ecole {
 	 * @param idEcole
 	 * @param nomEcole
 	 */
-	public Ecole(int idEcole, String nomEcole, String ville) {
+	public Ecole(String nomEcole, String ville) {
 		
-		this.idEcole = idEcole;
+		
 		this.nomEcole = nomEcole;
 		this.setVille(ville);
 	}

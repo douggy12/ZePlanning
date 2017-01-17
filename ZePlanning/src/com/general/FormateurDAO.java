@@ -16,7 +16,7 @@ public class FormateurDAO extends DAO<Formateur>{
 					.executeQuery("SELECT * FROM formateur WHERE id_formateur = " + id);
 			
 			if(result.first()){
-				formateur = new Formateur(id, result.getString("nom_formateur"), result.getString("prenom_formateur"));
+				formateur = new Formateur(result.getString("nom_formateur"), result.getString("prenom_formateur"));
 			}
 		}catch(SQLException e){
 			e.printStackTrace();

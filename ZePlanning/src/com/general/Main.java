@@ -10,26 +10,29 @@ public class Main {
 		// TODO Auto-generated method stub
 		DAO<Reservation> reservationDAO = new ReservationDAO();
 		
-		System.out.println(reservationDAO.find(1));
+		//System.out.println(reservationDAO.find(1));
 		
 		DAO<Salle> salleDAO = new SalleDAO();
 		DAO<Promo> promoDAO = new PromoDAO();
 		DAO<Formateur> formateurDAO = new FormateurDAO();
 		DAO<Ecole> ecoleDAO = new EcoleDAO();
 		
-		LocalDate date1 = LocalDate.of(2017, 1, 19);
+		//LocalDate date1 = LocalDate.of(2017, 1, 19);
 		
 		
 		
 		
-		System.out.println(date1);
-		System.out.println(formateurDAO.find(3));
+		//System.out.println(date1);
+		//System.out.println(formateurDAO.find(3));
 	
 		
 		//Reservation nResa1 = new Reservation(date1, salleDAO.find(1) , promoDAO.find(2), formateurDAO.find(2), "HoulaHoop", ecoleDAO.find(1));
 		 //reservationDAO.create(nResa1);
 		
-		Promo nPromo1 = new Promo(idPromo, nomPromo, nbEtudiant, description)
+		//Promo nPromo1 = new Promo("Harissa", 8, "une promo qui pique !");
+		//promoDAO.create(nPromo1);
+		
+		
 
 	}
 
