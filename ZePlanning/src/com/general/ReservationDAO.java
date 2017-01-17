@@ -3,6 +3,7 @@ package com.general;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class ReservationDAO extends DAO<Reservation>{
 
@@ -26,8 +27,8 @@ public class ReservationDAO extends DAO<Reservation>{
             
             if(result.first())
             		resa = new Reservation(
-            				id,
-            				result.getDate("date"), 
+            				
+            				result.getObject("date", LocalDate.class), 
             				new SalleDAO().find(result.getInt("id_salle")), 
             				new PromoDAO().find(result.getInt("id_promo")), 
             				new FormateurDAO().find(result.getInt("id_formateur")), 
@@ -51,7 +52,7 @@ public class ReservationDAO extends DAO<Reservation>{
                                     		ResultSet.TYPE_SCROLL_INSENSITIVE, 
                                     		ResultSet.CONCUR_UPDATABLE
                                     ).executeQuery(
-                                    		"SELECT NEXTVAL('langage_lan_id_seq') as id"
+                                    		"SELECT NEXTVAL('reservation_id_reservation_seq') as id"
                                     );
 			if(result.first()){
 				int id = result.getInt("id");
@@ -60,8 +61,9 @@ public class ReservationDAO extends DAO<Reservation>{
                                                     		"INSERT INTO reservation (id_reservation, date, matiere) VALUES(?, ?, ?); "
                                                     		+ "INSERT INTO join_table (id_reservation, id_salle, id_formateur, id_promo, id_ecole) VALUES(?, ?, ?, ?, ?)"
                                                     );
+    			System.out.println(id);
 				prepare.setInt(1, id);
-				prepare.setDate(2, obj.getDateResa());
+				prepare.setObject(2, obj.getDateResa());
 				prepare.setString(3, obj.getMatiereResa().toString());
 				prepare.setInt(4, obj.getIdResa());
 				prepare.setInt(5, obj.getSalleResa().getIdSalle());

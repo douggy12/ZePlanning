@@ -1,11 +1,11 @@
 package com.general;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Reservation {
 	
 	private int idResa;
-	private Date dateResa;
+	private LocalDate dateResa;
 	private Salle salleResa;
 	private Promo promoResa;
 	private Formateur formateurResa;
@@ -20,9 +20,9 @@ public class Reservation {
 	 * @param formateurResa
 	 * @param matiereResa
 	 */
-	public Reservation(int idResa, Date dateResa, Salle salleResa, Promo promoResa, Formateur formateurResa, String matiereResa, Ecole ecoleResa) {
+	public Reservation(LocalDate dateResa, Salle salleResa, Promo promoResa, Formateur formateurResa, String matiereResa, Ecole ecoleResa) {
 		
-		this.idResa = idResa;
+		
 		this.dateResa = dateResa;
 		this.salleResa = salleResa;
 		this.promoResa = promoResa;
@@ -40,12 +40,12 @@ public class Reservation {
 	public Reservation(){}
 
 
-	public Date getDateResa() {
+	public LocalDate getDateResa() {
 		return dateResa;
 	}
 
 
-	public void setDateResa(Date dateResa) {
+	public void setDateResa(LocalDate dateResa) {
 		this.dateResa = dateResa;
 	}
 
