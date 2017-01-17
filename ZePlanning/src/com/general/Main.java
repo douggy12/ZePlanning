@@ -29,8 +29,16 @@ public class Main {
 		//Reservation nResa1 = new Reservation(date1, salleDAO.find(1) , promoDAO.find(2), formateurDAO.find(2), "HoulaHoop", ecoleDAO.find(1));
 		 //reservationDAO.create(nResa1);
 		
-		//Promo nPromo1 = new Promo("Harissa", 8, "une promo qui pique !");
+		//Promo nPromo1 = new Promo(0,"Harissa", 8, "une promo qui pique !");
 		//promoDAO.create(nPromo1);
+		
+		Promo promo1 = promoDAO.find(7);
+		promoDAO.delete(promo1);
+		
+		System.out.println(promoDAO.count());
+		
+		
+		
 		
 		
 

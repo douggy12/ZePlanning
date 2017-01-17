@@ -19,7 +19,7 @@ public class SalleDAO extends DAO<Salle>{
                                              );
             if(result.first())
             		salle = new Salle(
-                                        
+                                        id, 
                                         result.getInt("num_salle"),
                                         result.getInt("nb_pc"),
                                         result.getInt("nb_bureaux"),
@@ -119,4 +119,40 @@ public class SalleDAO extends DAO<Salle>{
 		
 	}
 //test
+
+	@Override
+	public void deleteById(int id) {
+try {
+			
+            this    .connect
+                	.createStatement(
+                         ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                         ResultSet.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                         "DELETE FROM salle_de_cours WHERE id_salle = " + id
+                    );
+		
+    } catch (SQLException e) {
+            e.printStackTrace();
+    }
+		
+	}
+
+	@Override
+	public int count() {
+		int count = 0;
+		try {
+			ResultSet result =
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE)
+			.executeQuery("SELECT COUNT (*) FROM salle_de_cours");
+			if(result.first())
+			{
+				count = result.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 }

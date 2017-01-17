@@ -4,42 +4,44 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class EcoleDAO extends DAO<Ecole> {
+public class EtudiantDAO extends DAO<Etudiant> {
 
 	@Override
-	public Ecole find(int id) {
-		// TODO Auto-generated method stub
-		Ecole ecole = new Ecole();
-		try{
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
-					.executeQuery("SELECT * FROM ecole WHERE id_ecole = " + id);
-			
-			if(result.first()){
-				ecole = new Ecole(id, result.getString("nom_ecole"), result.getString("ville_ecole"));
-			}
-			
-		}catch (SQLException e){
+	public Etudiant find(int id) {
+		Etudiant etudiant = new Etudiant();
+
+		try {
+			ResultSet result = this .connect
+					.createStatement(
+							ResultSet.TYPE_SCROLL_INSENSITIVE, 
+							ResultSet.CONCUR_READ_ONLY
+							).executeQuery(
+									"SELECT * FROM etudiant WHERE id_etudiant = " + id
+									);
+			if(result.first())
+				etudiant = new Etudiant(id, result.getString("nom_etudiant"), result.getString("prenom_etudiant"), result.getInt("id_promo"));
+		} catch (SQLException e) {
+			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return ecole;
+		return etudiant;
 	}
 
 	@Override
-	public Ecole create(Ecole obj) {
-		// TODO Auto-generated method stub
-		
+	public Etudiant create(Etudiant obj) {
 		try{
 			//recupere la dernière valeur+1 pour id
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
-					.executeQuery("SELECT NEXTVAL('ecole_id_ecole_seq') as id");
+					.executeQuery("SELECT NEXTVAL('etudiant_id_etudiant_seq') as id");
 			
 			if(result.first()){
 				int id = result.getInt("id");
-				PreparedStatement prepare = this.connect.prepareStatement("INSERT INTO ecole (id_ecole, nom_ecole, ville_ecole ) VALUES(?,?,?)");
+				PreparedStatement prepare = this.connect.prepareStatement("INSERT INTO etudiant (id_etudiant, nom_etudiant, prenom_etudiant, id_promo ) VALUES(?,?,?,?)");
 				prepare.setInt(1, id);
-				prepare.setString(2, obj.getNomEcole());
-				prepare.setString(3, obj.getVille());
+				prepare.setString(2, obj.getNom());
+				prepare.setString(3, obj.getPrenom());
+				prepare.setInt(4, obj.getIdpromo());
 				
 				prepare.executeUpdate();
 				obj = this.find(id);
@@ -52,14 +54,12 @@ public class EcoleDAO extends DAO<Ecole> {
 	}
 
 	@Override
-	public Ecole update(Ecole obj) {
-		// TODO Auto-generated method stub
-		
+	public Etudiant update(Etudiant obj) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeQuery("UPDATE ecole SET ecole_nom = '" + obj.getNomEcole()+"', ecole_ville ='"+ obj.getVille()+" WHERE ecole_id = "+obj.getIdEcole());
+			.executeQuery("UPDATE etudiant SET etudiant_nom = '" + obj.getNom()+"', etudiant_prenom ='"+ obj.getPrenom()+"', id_promo ='"+ obj.getIdpromo()+" WHERE etudiant_id = "+obj.getId());
 			
-			obj = this.find(obj.getIdEcole());
+			obj = this.find(obj.getId());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -68,27 +68,27 @@ public class EcoleDAO extends DAO<Ecole> {
 	}
 
 	@Override
-	public void delete(Ecole obj) {
-		// TODO Auto-generated method stub
+	public void delete(Etudiant obj) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeUpdate("DELETE FROM ecole WHERE id_ecole = "+obj.getIdEcole());
+			.executeUpdate("DELETE FROM etudiant WHERE id_etudiant = "+obj.getId());
 			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
 	public void deleteById(int id) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeUpdate("DELETE FROM ecole WHERE id_ecole = "+id);
+			.executeUpdate("DELETE FROM etudiant WHERE id_etudiant = "+id);
 			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class EcoleDAO extends DAO<Ecole> {
 			ResultSet result =
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE)
-			.executeQuery("SELECT COUNT (*) FROM ecole");
+			.executeQuery("SELECT COUNT (*) FROM etudiant");
 			if(result.first())
 			{
 				count = result.getInt("count");
@@ -108,5 +108,6 @@ public class EcoleDAO extends DAO<Ecole> {
 		}
 		return count;
 	}
+
 
 }

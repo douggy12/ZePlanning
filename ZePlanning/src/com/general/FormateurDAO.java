@@ -16,7 +16,7 @@ public class FormateurDAO extends DAO<Formateur>{
 					.executeQuery("SELECT * FROM formateur WHERE id_formateur = " + id);
 			
 			if(result.first()){
-				formateur = new Formateur(result.getString("nom_formateur"), result.getString("prenom_formateur"));
+				formateur = new Formateur(id, result.getString("nom_formateur"), result.getString("prenom_formateur"));
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -91,6 +91,37 @@ public class FormateurDAO extends DAO<Formateur>{
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public void deleteById(int id) {
+		try {
+			this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                	ResultSet.CONCUR_UPDATABLE)
+			.executeUpdate("DELETE FROM formateur WHERE id_formateur = "+id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public int count() {
+		int count = 0;
+		try {
+			ResultSet result =
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE)
+			.executeQuery("SELECT COUNT (*) FROM formateur");
+			if(result.first())
+			{
+				count = result.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 	
 	

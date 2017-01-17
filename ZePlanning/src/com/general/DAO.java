@@ -32,4 +32,8 @@ public abstract class DAO<T> {
 	 * @param obj
 	 */
 	public abstract void delete(T obj);
+	
+	public abstract void deleteById(int id);
+	
+	public abstract int count();
 }
