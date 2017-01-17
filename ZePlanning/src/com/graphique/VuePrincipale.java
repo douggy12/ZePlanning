@@ -1,10 +1,12 @@
 package com.graphique;
- 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,7 +20,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class FenetrePrincipale extends JFrame implements MouseListener
+public class VuePrincipale extends JFrame implements MouseListener, Observer
 {
 	private int nbSalles=5;
 	private JPanel contenant = new JPanel(); // pour contenant
@@ -28,6 +30,8 @@ public class FenetrePrincipale extends JFrame implements MouseListener
 	private JButton navLeft = new JButton("Précédente");
 	private JButton navRight = new JButton("Suivante");
 	private JLabel semaine = new JLabel ("Semaine");
+	private JLabel annee = new JLabel("Année");
+	private JTextField yearNumber = new JTextField("0");
 	private JTextField weekNumber = new JTextField("42"); // texte à updater
 	private JPopupMenu popResa;
 	
@@ -37,7 +41,7 @@ public class FenetrePrincipale extends JFrame implements MouseListener
 	private String ListeSalles[]={"Salle 1", "Salle 2", "Salle 3", "Salle 4", "Salle 5"};
 
 	
-	public FenetrePrincipale ()
+	public VuePrincipale ()
 	{
 		this.setTitle("IMIE - Planning des salles");
 		this.setSize(1280,800);
@@ -84,6 +88,8 @@ public class FenetrePrincipale extends JFrame implements MouseListener
 	void SemNavigation()
 	{
 		contenant.add(navi, BorderLayout.NORTH);
+		navi.add(annee);
+		navi.add(yearNumber);
 		navi.add(navLeft);
 		navi.add(semaine);
 		navi.add(weekNumber);
@@ -166,6 +172,12 @@ public class FenetrePrincipale extends JFrame implements MouseListener
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		
 	}
