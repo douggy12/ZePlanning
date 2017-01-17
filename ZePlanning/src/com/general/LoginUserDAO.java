@@ -4,42 +4,40 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class EcoleDAO extends DAO<Ecole> {
+public class LoginUserDAO extends DAO<LoginUser> {
 
 	@Override
-	public Ecole find(int id) {
-		// TODO Auto-generated method stub
-		Ecole ecole = new Ecole();
+	public LoginUser find(int id) {
+		LoginUser loginUser = new LoginUser();
+
 		try{
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
-					.executeQuery("SELECT * FROM ecole WHERE id_ecole = " + id);
-			
+			ResultSet result  = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
+					.executeQuery("SELECT * FROM user WHERE id_user = " + id);
+
 			if(result.first()){
-				ecole = new Ecole(id, result.getString("nom_ecole"), result.getString("ville_ecole"));
+				loginUser = new LoginUser(id, result.getInt("user_level"), result.getString("user_name"), result.getString("user_pwd"));
 			}
-			
-		}catch (SQLException e){
+		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		return ecole;
+		return loginUser;
 	}
 
 	@Override
-	public Ecole create(Ecole obj) {
-		// TODO Auto-generated method stub
-		
+	public LoginUser create(LoginUser obj) {
 		try{
 			//recupere la dernière valeur+1 pour id
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
-					.executeQuery("SELECT NEXTVAL('ecole_id_ecole_seq') as id");
+					.executeQuery("SELECT NEXTVAL('user_id_user_seq') as id");
 			
 			if(result.first()){
 				int id = result.getInt("id");
-				PreparedStatement prepare = this.connect.prepareStatement("INSERT INTO ecole (id_ecole, nom_ecole, ville_ecole ) VALUES(?,?,?)");
+				PreparedStatement prepare = this.connect.prepareStatement("INSERT INTO user (id_user, user_level, user_name, user_pwd ) VALUES(?,?,?,?)");
 				prepare.setInt(1, id);
-				prepare.setString(2, obj.getNomEcole());
-				prepare.setString(3, obj.getVille());
+				prepare.setInt(2, obj.getUserLvl());
+				prepare.setString(3, obj.getLogin());
+				prepare.setString(4, obj.getMdp());
 				
 				prepare.executeUpdate();
 				obj = this.find(id);
@@ -52,14 +50,12 @@ public class EcoleDAO extends DAO<Ecole> {
 	}
 
 	@Override
-	public Ecole update(Ecole obj) {
-		// TODO Auto-generated method stub
-		
+	public LoginUser update(LoginUser obj) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeQuery("UPDATE ecole SET ecole_nom = '" + obj.getNomEcole()+"', ecole_ville ='"+ obj.getVille()+" WHERE ecole_id = "+obj.getIdEcole());
+			.executeQuery("UPDATE user SET user_level = '" + obj.getUserLvl()+"', user_name ='"+ obj.getLogin()+"', user_pwd ='"+ obj.getMdp()+" WHERE user_id = "+obj.getIdUser());
 			
-			obj = this.find(obj.getIdEcole());
+			obj = this.find(obj.getIdUser());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -68,27 +64,27 @@ public class EcoleDAO extends DAO<Ecole> {
 	}
 
 	@Override
-	public void delete(Ecole obj) {
-		// TODO Auto-generated method stub
+	public void delete(LoginUser obj) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeUpdate("DELETE FROM ecole WHERE id_ecole = "+obj.getIdEcole());
+			.executeUpdate("DELETE FROM user WHERE id_user = "+obj.getIdUser());
 			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
 	public void deleteById(int id) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeUpdate("DELETE FROM ecole WHERE id_ecole = "+id);
+			.executeUpdate("DELETE FROM user WHERE id_user = "+id);
 			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -98,7 +94,7 @@ public class EcoleDAO extends DAO<Ecole> {
 			ResultSet result =
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE)
-			.executeQuery("SELECT COUNT (*) FROM ecole");
+			.executeQuery("SELECT COUNT (*) FROM user");
 			if(result.first())
 			{
 				count = result.getInt("count");

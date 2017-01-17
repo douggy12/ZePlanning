@@ -8,8 +8,8 @@ public class Formateur {
 	 * @param nomFormateur
 	 * @param prenomFormateur
 	 */
-	public Formateur(String nomFormateur, String prenomFormateur) {
-		
+	public Formateur(int idFormateur,String nomFormateur, String prenomFormateur) {
+		this.idFormateur = idFormateur;
 		this.nomFormateur = nomFormateur;
 		this.prenomFormateur = prenomFormateur;
 	}

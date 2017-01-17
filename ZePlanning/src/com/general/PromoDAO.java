@@ -19,7 +19,7 @@ public class PromoDAO extends DAO<Promo> {
                          "SELECT * FROM promo WHERE id_promo = " + id
                       );
 if(result.first())
-     promo = new Promo(result.getString("nom_promo"), result.getInt("nb_etudiant"), result.getString("description"));
+     promo = new Promo(id, result.getString("nom_promo"), result.getInt("nb_etudiant"), result.getString("description"));
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -101,6 +101,42 @@ if(result.first())
     } catch (SQLException e) {
             e.printStackTrace();
     }
+		
+	}
+	
+	public int count(){
+		int count = 0;
+		try {
+			ResultSet result =
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE)
+			.executeQuery("SELECT COUNT (*) FROM promo");
+			if(result.first())
+			{
+				count = result.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	@Override
+	public void deleteById(int id) {
+try {
+			
+            this    .connect
+                	.createStatement(
+                         ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                         ResultSet.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                         "DELETE FROM promo WHERE id_promo = " + id
+                    );
+		
+    } catch (SQLException e) {
+            e.printStackTrace();
+    }
+		
 		
 	}
 

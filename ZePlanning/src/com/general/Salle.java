@@ -13,9 +13,9 @@ public class Salle {
 	 * @param tableau
 	 * @param nomSalle
 	 */
-	public Salle(int numSalle, int nbPC, int nbBureaux, int nbChaises, boolean videoProjecteur, boolean tableau,
+	public Salle(int idSalle, int numSalle, int nbPC, int nbBureaux, int nbChaises, boolean videoProjecteur, boolean tableau,
 			String nomSalle) {
-		
+		this.idSalle = idSalle;
 		this.numSalle = numSalle;
 		this.nbPC = nbPC;
 		this.nbBureaux = nbBureaux;

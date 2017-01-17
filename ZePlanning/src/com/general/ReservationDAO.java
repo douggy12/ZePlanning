@@ -27,7 +27,7 @@ public class ReservationDAO extends DAO<Reservation>{
             
             if(result.first())
             		resa = new Reservation(
-            				
+            				id,
             				result.getObject("date", LocalDate.class), 
             				new SalleDAO().find(result.getInt("id_salle")), 
             				new PromoDAO().find(result.getInt("id_promo")), 
@@ -129,6 +129,43 @@ public class ReservationDAO extends DAO<Reservation>{
 	            e.printStackTrace();
 	    }
 		
+	}
+
+	@Override
+	public void deleteById(int id) {
+try {
+			
+			this.connect	
+                .createStatement(
+                	ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                	ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                	"DELETE FROM reservation WHERE id_reservation = " + id+" ; "
+                			+ "DELETE FROM join_table WHERE id_reservation = " + id
+                 );
+
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
+		
+	}
+
+	@Override
+	public int count() {
+		int count = 0;
+		try {
+			ResultSet result =
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE)
+			.executeQuery("SELECT COUNT (*) FROM reservation");
+			if(result.first())
+			{
+				count = result.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 	
 

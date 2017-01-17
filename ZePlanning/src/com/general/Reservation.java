@@ -20,9 +20,9 @@ public class Reservation {
 	 * @param formateurResa
 	 * @param matiereResa
 	 */
-	public Reservation(LocalDate dateResa, Salle salleResa, Promo promoResa, Formateur formateurResa, String matiereResa, Ecole ecoleResa) {
+	public Reservation(int id,LocalDate dateResa, Salle salleResa, Promo promoResa, Formateur formateurResa, String matiereResa, Ecole ecoleResa) {
 		
-		
+		this.idResa = id;
 		this.dateResa = dateResa;
 		this.salleResa = salleResa;
 		this.promoResa = promoResa;
