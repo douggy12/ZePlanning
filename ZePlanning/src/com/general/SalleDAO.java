@@ -52,7 +52,7 @@ public class SalleDAO extends DAO<Salle>{
 				int id = result.getInt("id");
     			PreparedStatement prepare = this	.connect
                                                     .prepareStatement(
-                                                    	"INSERT INTO salle (id_salle, nb_pc, nb_bureaux, nb_chaises, videoprojecteur, tableau, num_salle, nom_salle) VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
+                                                    	"INSERT INTO salle_de_cours (id_salle, nb_pc, nb_bureaux, nb_chaises, videoprojecteur, tableau, num_salle, nom_salle) VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
                                                     );
 				prepare.setLong(1, id);
 				prepare.setInt(2, obj.getNbPC());
@@ -82,7 +82,7 @@ public class SalleDAO extends DAO<Salle>{
                 	ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE
                  ).executeUpdate(
-                	"UPDATE salle SET "
+                	"UPDATE salle_de_cours SET "
                 	+ "num_salle = '" + obj.getNumSalle() + "', "
                 	+ "nb_pc = '" + obj.getNbPC() + "', "
                 	+ "nb_bureaux = '" + obj.getNbBureaux() + "', "
@@ -110,7 +110,7 @@ public class SalleDAO extends DAO<Salle>{
                          ResultSet.TYPE_SCROLL_INSENSITIVE, 
                          ResultSet.CONCUR_UPDATABLE
                     ).executeUpdate(
-                         "DELETE FROM salle WHERE id_salle = " + obj.getIdSalle()
+                         "DELETE FROM salle_de_cours WHERE id_salle = " + obj.getIdSalle()
                     );
 		
     } catch (SQLException e) {
