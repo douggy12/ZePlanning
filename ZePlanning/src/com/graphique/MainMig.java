@@ -1,5 +1,5 @@
 package com.graphique;
-
+ 
 import java.awt.GraphicsConfiguration;
 
 public class MainMig {
