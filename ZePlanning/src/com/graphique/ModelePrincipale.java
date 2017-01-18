@@ -33,6 +33,7 @@ public class ModelePrincipale extends Observable {
 		weekNum = now.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		year = now.get(IsoFields.WEEK_BASED_YEAR);
 		
+		System.out.println(weekNum + "-"+year);
 		
 	}
 	
@@ -53,6 +54,22 @@ public class ModelePrincipale extends Observable {
 		setChanged();				//signale qu'il y a eu des changements
 		notifyObservers(this); 		//previent les observateurs du changement
 	}
+
+	public int getWeekNum() {
+		return weekNum;
+	}
+
+	public int getYear() {
+		return year;
+	}
+	
+	public void refreshVue(){
+		setChanged();				//signale qu'il y a eu des changements
+		notifyObservers(this); 		//previent les observateurs du changement
+		System.out.println("houhou");
+	}
+	
+	
 	 
 	/* Ne sert à rien
 	private String dateFormat(Object obj){

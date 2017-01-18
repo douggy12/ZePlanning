@@ -3,8 +3,13 @@ package com.graphique;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.IsoFields;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,6 +27,7 @@ import javax.swing.JTextField;
 
 public class VuePrincipale extends JFrame implements MouseListener, Observer
 {
+	private ControlleurPrincipale controler;
 	private int nbSalles=5;
 	private JPanel contenant = new JPanel(); // pour contenant
 	private JPanel navi = new JPanel(); //  pour BoxLayout
@@ -31,8 +37,12 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 	private JButton navRight = new JButton("Suivante");
 	private JLabel semaine = new JLabel ("Semaine");
 	private JLabel annee = new JLabel("Année");
-	private JTextField yearNumber = new JTextField("0");
-	private JTextField weekNumber = new JTextField("42"); // texte à updater
+	
+	private ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Europe/Paris"));
+	private int weekNum = now.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+	private int year = now.get(IsoFields.WEEK_BASED_YEAR);
+	private JTextField yearNumber = new JTextField(Integer.toString(year));
+	private JTextField weekNumber = new JTextField(Integer.toString(weekNum)); // texte à updater
 	private JPopupMenu popResa;
 	
 	private String ville="Le Mans";
@@ -41,13 +51,16 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 	private String ListeSalles[]={"Salle 1", "Salle 2", "Salle 3", "Salle 4", "Salle 5"};
 
 	
-	public VuePrincipale ()
+	public VuePrincipale (ControlleurPrincipale controler)
 	{
+		this.controler = controler;
 		this.setTitle("IMIE - Planning des salles");
 		this.setSize(1280,800);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.setBackground(Color.WHITE);
+		
+		
 		
 		contenant.setLayout(new BorderLayout());
 		getContentPane().add(contenant);
@@ -57,7 +70,10 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 		GrilleSemaine();
 		
 		PopUpReserver();
+		
+		refresh();
 		this.setVisible(true);
+		
 		
 	}
 		
@@ -91,9 +107,11 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 		navi.add(annee);
 		navi.add(yearNumber);
 		navi.add(navLeft);
+		navLeft.addActionListener(new btnSemaine());
 		navi.add(semaine);
 		navi.add(weekNumber);
 		navi.add(navRight);
+		navRight.addActionListener(new btnSemaine());
 	}
 	
 	void GrilleSemaine()
@@ -175,11 +193,32 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 		// TODO Auto-generated method stub
 		
 	}
+	class btnSemaine implements ActionListener  {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == navLeft){
+				controler.setDate(false);
+			}
+			else controler.setDate(true);
+			
+		}
+		
+	}
+	public void refresh(){
+		controler.setDate();
+	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable o, Object obj) {
 		// TODO Auto-generated method stub
-		
+		if(o instanceof ModelePrincipale){
+			System.out.println("hrey");
+			ModelePrincipale mod = (ModelePrincipale)obj;
+			yearNumber.setText(mod.getYear()+"");
+			weekNumber.setText(mod.getWeekNum()+"");
+			
+		}
 	}
 	
 		

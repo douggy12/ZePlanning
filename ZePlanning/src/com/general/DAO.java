@@ -2,6 +2,7 @@ package com.general;
 
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 public abstract class DAO<T> {
 
@@ -36,4 +37,6 @@ public abstract class DAO<T> {
 	public abstract void deleteById(int id);
 	
 	public abstract int count();
+	
+	public abstract ArrayList<T> findAll();
 }
