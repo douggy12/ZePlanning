@@ -1,8 +1,10 @@
 package com.graphique;
- 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -52,7 +54,7 @@ public class FenetrePrincipale extends JFrame implements MouseListener
 		SemNavigation();
 		GrilleSemaine();
 		
-		PopUpReserver();
+		
 		this.setVisible(true);
 		
 	}
@@ -66,6 +68,7 @@ public class FenetrePrincipale extends JFrame implements MouseListener
 		barreMenus.add(consulter);
 		JMenu reserver = new JMenu("Réserver");
 		barreMenus.add(reserver);
+		
 		JMenu gerer = new JMenu("Gérer");
 		barreMenus.add(gerer);
 
@@ -127,15 +130,9 @@ public class FenetrePrincipale extends JFrame implements MouseListener
 		contenant.add(grille, BorderLayout.CENTER);
 	}
 	
-	void PopUpReserver()
-	{
-		JPopupMenu popResa = new JPopupMenu("Réserver");
-		popResa.add(new JMenu("Resa"));
 	
-		this.addMouseListener(this);
-		
-	}
-
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getButton()==MouseEvent.BUTTON2)
