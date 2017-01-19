@@ -109,7 +109,7 @@ public class ReservationDAO extends DAO<Reservation>{
 				prepare.setInt(1, id);
 				prepare.setObject(2, obj.getDateResa());
 				prepare.setString(3, obj.getMatiereResa().toString());
-				prepare.setInt(4, obj.getIdResa());
+				prepare.setInt(4, id);
 				prepare.setInt(5, obj.getSalleResa().getIdSalle());
 				prepare.setInt(6, obj.getFormateurResa().getIdFormateur());
 				prepare.setInt(7, obj.getPromoResa().getIdPromo());

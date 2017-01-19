@@ -37,10 +37,10 @@ public class PromoDAO extends DAO<Promo> {
 							ResultSet.TYPE_SCROLL_INSENSITIVE, 
 							ResultSet.CONCUR_READ_ONLY
 							).executeQuery(
-									"SELECT * FROM promo WHERE nom_promo = " + nom
+									"SELECT * FROM promo WHERE nom_promo = '" + nom+"'"
 									);
 			if(result.first())
-				promo = new Promo(result.getInt("id_promo"), result.getString("nom_promo"), result.getInt("nb_etudiant"), result.getString("description"));
+				promo = new Promo(result.getInt("id_promo"), nom, result.getInt("nb_etudiant"), result.getString("description"));
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();

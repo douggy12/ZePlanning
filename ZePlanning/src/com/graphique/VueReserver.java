@@ -1,5 +1,5 @@
 package com.graphique;
-//
+
 import java.awt.Button;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
@@ -26,6 +26,7 @@ import com.general.FormateurDAO;
 import com.general.Promo;
 import com.general.PromoDAO;
 import com.general.Reservation;
+import com.general.ReservationDAO;
 import com.general.Salle;
 import com.general.SalleDAO;
 
@@ -66,6 +67,7 @@ public class VueReserver extends JFrame implements MouseListener{
 	PromoDAO promoDAO = new PromoDAO();
 	EcoleDAO ecoleDAO = new EcoleDAO();
 	FormateurDAO formateurDAO = new FormateurDAO();
+	ReservationDAO resaDAO = new ReservationDAO();
 	
 	public VueReserver(Salle salle, String date)
 	{
@@ -118,7 +120,7 @@ public class VueReserver extends JFrame implements MouseListener{
 			});
 			salle.add(salles);	
 		}
-		salle.addMouseListener(this);
+
 			
 	}
 
@@ -145,7 +147,7 @@ public class VueReserver extends JFrame implements MouseListener{
 			promo.add(promos);
 
 		}
-		promos.addActionListener(new boutAjouRéservation());
+//		promos.addActionListener(new boutAjouRéservation());
 		formateurs = new JComboBox<String>();
 
 		Iterator<Formateur> ite = formateurDAO.findAll().iterator();
@@ -197,7 +199,7 @@ public class VueReserver extends JFrame implements MouseListener{
 		ajou.addActionListener(new boutAjouRéservation());
 		boutFin.add(annul);
 		annul.addMouseListener(this);
-//		boutFin.addMouseListener(this);
+		ajou.addMouseListener(this);
 		container.add(boutFin);
 	}
 	
@@ -214,19 +216,15 @@ public class VueReserver extends JFrame implements MouseListener{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Formateur formateur = formateurDAO.find(formateurs.getSelectedItem().toString());
+			Promo promo = promoDAO.find(promos.getSelectedItem().toString());
+
 			System.out.println(promos.getSelectedItem());
 			System.out.println(formateurs.getSelectedItem());
 			
-			Reservation reservation = new Reservation(0, dateSel, salleSel, promoResa, formateur, text.getText(), ecoleDAO.find(1));
-//			Iterator<Promo> it = promoDAO.findAll().iterator();
-//			while (it.hasNext())
-//			{
-//				if ( promos.getSelectedItem() == promoDAO.findAll())
-//				{
-//					
-//					
-//				}
-//			}
+			Reservation reservation = new Reservation(0, dateSel, salleSel, promo, formateur, text.getText(), ecoleDAO.find(1));
+		
+			resaDAO.create(reservation);
+			
 		}
 	}
 	

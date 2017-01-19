@@ -128,21 +128,23 @@ public class VueGererSalle extends JFrame
 	{
 		validation.setLayout(new BoxLayout(validation, BoxLayout.LINE_AXIS));
 		validation.add(enregistrer);
-		enregistrer.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String nomS = nomSalle.getText();
-				int numS = Integer.parseInt(numSalle.getText());
-				int capa = Integer.parseInt(formCapacite.getText());
-				int nbChaise = Integer.par
-				int nbTable
-				int nbPC
-				boolean tableau,videoProj;
-				
-				Salle salle = new Salle(0, numS, nbPC, nbChaise, nbChaise, videoProj, tableau, nomS);
-				
-			}
-		});
-	}
+//		enregistrer.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String nomS = nomSalle.getText();
+//				int numS = Integer.parseInt(numSalle.getText());
+//				int capa = Integer.parseInt(formCapacite.getText());
+//				int nbChaise = Integer.par
+//				int nbTable
+//				int nbPC
+//				boolean tableau,videoProj;
+//				
+//				Salle salle = new Salle(0, numS, nbPC, nbChaise, nbChaise, videoProj, tableau, nomS);
+//				
+//			}
+//		});
+//	}
+}
+	
 }
