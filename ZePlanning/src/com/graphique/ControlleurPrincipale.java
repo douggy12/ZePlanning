@@ -1,5 +1,8 @@
 package com.graphique;
 
+import com.general.Salle;
+import com.general.SalleDAO;
+
 public class ControlleurPrincipale {
 	private ModelePrincipale modele;
 
@@ -26,6 +29,14 @@ public class ControlleurPrincipale {
 		modele.refreshVue();
 		System.out.println("fresh");
 
+	}
+	public void ajouterSalle(Salle salle){
+		modele.ajouterSalle(salle);
+		
+	}
+	
+	public void supprimerSalle(Salle salle){
+		modele.supprimerSalle(salle);
 	}
 	
 

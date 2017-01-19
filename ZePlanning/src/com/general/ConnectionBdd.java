@@ -8,7 +8,7 @@ public class ConnectionBdd{
 	/**
 	 * URL de connection
 	 */
-	private static String url = "jdbc:postgresql://localhost:5432/ZePlanning";
+	private static String url = "jdbc:postgresql://localhost:5433/ZePlanning";
 	/**
 	 * Nom du user
 	 */
@@ -16,7 +16,7 @@ public class ConnectionBdd{
 	/**
 	 * Mot de passe du user
 	 */
-	private static String passwd = "rootdav";
+	private static String passwd = "linux";
 	/**
 	 * Objet Connection
 	 */

@@ -62,9 +62,9 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	private JTextField weekNumber = new JTextField(Integer.toString(weekNum)); // texte à updater
 	private JPopupMenu popResa;
 	
-	private JPopupMenu resaPopup = new JPopupMenu();
-	private JMenuItem delresa = new JMenuItem("supprimer");
-	private JMenuItem addresa = new JMenuItem("réserver");
+	private JPopupMenu popupItem = new JPopupMenu();
+	private JMenuItem delItem = new JMenuItem("supprimer");
+	private JMenuItem reserverItem = new JMenuItem("réserver");
 	
 	private String ville="Le Mans";
 	private JLabel etablissement = new JLabel(ville);
@@ -74,7 +74,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	
 	private ArrayList<String> listeJours= new ArrayList<>();
 	private ArrayList<String> listeDates = new ArrayList<>();
-	private ArrayList<Salle> listeSalle = salleDAO.findAll();
+	
 	private ArrayList<Reservation> listeResa;
 	
 	private String formateur;
@@ -107,7 +107,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		
 		MenuBar();
 		SemNavigation();
-		GrilleSemaine();
+		
 		
 	}
 		
@@ -120,7 +120,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		barreMenus.add(consulter);
 		JMenu reserver = new JMenu("Réserver");
 		barreMenus.add(reserver);
-		JMenu gerer = new JMenu("Gérer");
+		JMenu gerer = new JMenu("Ajouter");
 		barreMenus.add(gerer);
 
 		JMenuItem formateur = new JMenuItem ("Formateur");
@@ -129,8 +129,9 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		JMenuItem promo = new JMenuItem ("Promo");
 		gerer.add(promo);
 		gerer.addSeparator();
-		JMenuItem etudiant = new JMenuItem ("Etudiant");
-		gerer.add(etudiant);
+		JMenuItem addSalle = new JMenuItem ("Salle");
+		addSalle.addActionListener(new AjouterSalle());
+		gerer.add(addSalle);
 		
 		consulter.setToolTipText("Vue actuelle!"); // bulle d'aide, affectée au JMenu
 	}	
@@ -150,7 +151,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	
 	
 	
-	void GrilleSemaine(){
+	void GrilleSemaine(ModelePrincipale modele){
 		
 		grille.removeAll();
 		grille.setLayout(new GridLayout(0,6));
@@ -183,17 +184,18 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 			grille.add(jours);
 		}*/
 		
-		for (int i=0; i<listeSalle.size();i++)
+		for (int i=0; i<modele.getListeSalle().size();i++)
 		{
-			JLabel salle = new JLabel(listeSalle.get(i).getNomSalle());
+			JLabel salle = new JLabel(modele.getListeSalle().get(i).getNomSalle());
 			
 			
 			salle.setBorder(BorderFactory.createLineBorder(Color.black));
 			grille.add(salle);
+			salle.addMouseListener(new deleteSalleListener(modele.getListeSalle().get(i)));
 			
 			for (int j=0; j<listeJours.size();j++)
 			{
-				Reservation resa = reservationDAO.findByDate(listeSalle.get(i).getNomSalle(), listeDates.get(j));
+				Reservation resa = reservationDAO.findByDate(modele.getListeSalle().get(i).getNomSalle(), listeDates.get(j));
 				
 				if(resa != null){
 					JPanel resaPanel = new JPanel();
@@ -218,7 +220,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 					
 					JPanel blanco = new JPanel();
 					blanco.setBackground(Color.WHITE);
-					blanco.addMouseListener(new addResaListener(listeSalle.get(i),listeDates.get(j)));
+					blanco.addMouseListener(new addResaListener(modele.getListeSalle().get(i),listeDates.get(j)));
 					grille.add(blanco);
 				}
 				
@@ -288,6 +290,16 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		controler.setDate();
 	}
 	
+	class AjouterSalle implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			VueGererSalle vueGS = new VueGererSalle(controler);
+			
+		}
+		
+	}
+	
 	class resaListener implements MouseListener {
 		
 		Reservation resa;
@@ -307,10 +319,10 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 			
 			if (e.getButton() == MouseEvent.BUTTON3){
 				
-				resaPopup.add(delresa);
-				resaPopup.show(e.getComponent(), e.getX(), e.getY());
+				popupItem.add(delItem);
+				popupItem.show(e.getComponent(), e.getX(), e.getY());
 				
-				delresa.addActionListener(new ActionListener() {
+				delItem.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -369,9 +381,9 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getButton()== MouseEvent.BUTTON3){
-				resaPopup.add(addresa);
-				resaPopup.show(e.getComponent(), e.getX(), e.getY());
-				addresa.addActionListener(new ActionListener() {
+				popupItem.add(reserverItem);
+				popupItem.show(e.getComponent(), e.getX(), e.getY());
+				reserverItem.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -386,6 +398,62 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		 * 
 		 */
 		
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	class deleteSalleListener implements MouseListener{
+		Salle salle;
+		/**
+		 * 
+		 */
+		public deleteSalleListener(Salle salle) {
+			super();
+			this.salle = salle;
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			if(e.getButton()== MouseEvent.BUTTON3){
+				
+				popupItem.add(delItem);
+				popupItem.show(e.getComponent(), e.getX(), e.getY());
+				delItem.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						controler.supprimerSalle(salle);
+						controler.refresh();
+						
+					}
+				});
+			}
+		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -433,9 +501,10 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 			//this.setVisible(false);
 			//this.setVisible(true);
 			
-			GrilleSemaine();
+			GrilleSemaine(mod);
 			
 			this.validate();
+			this.repaint();
 			System.out.println("update");
 			
 			

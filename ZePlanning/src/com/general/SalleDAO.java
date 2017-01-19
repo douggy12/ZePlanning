@@ -50,10 +50,10 @@ public class SalleDAO extends DAO<Salle>{
                                     		ResultSet.TYPE_SCROLL_INSENSITIVE, 
                                     		ResultSet.CONCUR_UPDATABLE
                                     ).executeQuery(
-                                    		"SELECT NEXTVAL('salle_id_salle_seq') as id"
+                                    		"SELECT NEXTVAL('salle_de_cours_id_salle_seq') as id"
                                     );
 			if(result.first()){
-				int id = result.getInt("id");
+				int id = result.getInt("id")+1;
     			PreparedStatement prepare = this	.connect
                                                     .prepareStatement(
                                                     	"INSERT INTO salle_de_cours (id_salle, nb_pc, nb_bureaux, nb_chaises, videoprojecteur, tableau, num_salle, nom_salle) VALUES(?, ?, ?, ?, ?, ?, ?, ?)"

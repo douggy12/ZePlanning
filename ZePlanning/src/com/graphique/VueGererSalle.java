@@ -11,10 +11,12 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.general.Salle;
+import com.general.SalleDAO;
 
 public class VueGererSalle extends JFrame
 {
@@ -48,9 +50,11 @@ public class VueGererSalle extends JFrame
 	private JCheckBoxMenuItem tickTableau = new JCheckBoxMenuItem();
 	private JCheckBoxMenuItem tickVideopro = new JCheckBoxMenuItem();
 	
+	private ControlleurPrincipale controler;
 	
-	public VueGererSalle()
+	public VueGererSalle(ControlleurPrincipale controler)
 	{
+		this.controler = controler;
 		this.salle=salle;
 		this.setTitle("Gérer Salle");
 		this.setSize(350,480);
@@ -133,14 +137,31 @@ public class VueGererSalle extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String nomS = nomSalle.getText();
-				int numS = Integer.parseInt(numSalle.getText());
-				int capa = Integer.parseInt(formCapacite.getText());
-				int nbChaise = Integer.par
-				int nbTable
-				int nbPC
-				boolean tableau,videoProj;
 				
-				Salle salle = new Salle(0, numS, nbPC, nbChaise, nbChaise, videoProj, tableau, nomS);
+				
+				
+				if(!nomSalle.getText().isEmpty() && !numSalle.getText().isEmpty() && !formCapacite.getText().isEmpty() && !formChaises.getText().isEmpty() && !formPC.getText().isEmpty()){
+					int numS = Integer.parseInt(numSalle.getText());
+					int capa = Integer.parseInt(formCapacite.getText());
+					int nbChaise = Integer.parseInt(formChaises.getText());
+					int nbTable = Integer.parseInt(formChaises.getText());
+					int nbPC = Integer.parseInt(formPC.getText());
+					
+					boolean tableau = tickTableau.isSelected();
+					boolean videoProj = tickVideopro.isSelected();
+					
+					Salle salle = new Salle(0, numS, nbPC, nbChaise, nbChaise, videoProj, tableau, nomS);
+					
+					controler.ajouterSalle(salle);
+					dispose();
+				}
+				else {
+					JOptionPane warningPane = new JOptionPane();
+					warningPane.showMessageDialog(contenant, "Il manque des données");
+				}
+				
+				
+				
 				
 			}
 		});

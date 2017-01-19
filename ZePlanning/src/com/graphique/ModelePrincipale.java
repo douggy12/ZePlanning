@@ -9,6 +9,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Observable;
 
+import com.general.Salle;
+import com.general.SalleDAO;
+
 public class ModelePrincipale extends Observable {
 	private ZoneId zoneid = ZoneId.of("Europe/Paris");
 	private Calendar gc = new GregorianCalendar();
@@ -18,6 +21,9 @@ public class ModelePrincipale extends Observable {
 	
 	ArrayList<String> listeJours = new ArrayList<>();
 	ArrayList<String> listeDates = new ArrayList<>();
+	
+	private ArrayList<Salle> listeSalle;
+	SalleDAO salleDAO = new SalleDAO();
 
 	
 	
@@ -32,6 +38,10 @@ public class ModelePrincipale extends Observable {
 		ZonedDateTime now = ZonedDateTime.now(zoneid);
 		weekNum = now.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		year = now.get(IsoFields.WEEK_BASED_YEAR);
+		
+		
+		
+		this.listeSalle =  salleDAO.findAll();
 		
 		
 		
@@ -78,11 +88,30 @@ public class ModelePrincipale extends Observable {
 	}
 	
 	public void refreshVue(){
+		
+		
 		setChanged();				//signale qu'il y a eu des changements
 		notifyObservers(this); 		//previent les observateurs du changement
 		
 		
 
+	}
+
+	public ArrayList<Salle> getListeSalle() {
+		return listeSalle;
+	}
+	
+	public void ajouterSalle(Salle salle){
+		
+		salleDAO.create(salle);
+		listeSalle.add(salle);
+		refreshVue();
+	}
+	
+	public void supprimerSalle(Salle salle){
+		salleDAO.delete(salle);
+		listeSalle.remove(salle);
+		refreshVue();
 	}
 	
 	
