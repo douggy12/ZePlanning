@@ -16,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,7 +35,7 @@ import com.general.ReservationDAO;
 import com.general.Salle;
 import com.general.SalleDAO;
 
-public class VuePrincipale extends JFrame implements MouseListener, Observer
+public class VuePrincipale extends JFrame implements MouseListener, Observer, ActionListener
 {
 	private ControlleurPrincipale controler;
 	
@@ -59,6 +60,10 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 	private JTextField yearNumber = new JTextField(Integer.toString(year));
 	private JTextField weekNumber = new JTextField(Integer.toString(weekNum)); // texte à updater
 	private JPopupMenu popResa;
+	
+	private JPopupMenu resaPopup = new JPopupMenu();
+	private JMenuItem delresa = new JMenuItem("supprimer");
+	private JMenuItem addresa = new JMenuItem("réserver");
 	
 	private String ville="Le Mans";
 	private JLabel etablissement = new JLabel(ville);
@@ -102,7 +107,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 		MenuBar();
 		SemNavigation();
 		GrilleSemaine();
-		PopUpReserver();
+		
 	}
 		
 	void MenuBar()
@@ -190,19 +195,29 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 				Reservation resa = reservationDAO.findByDate(listeSalle.get(i).getNomSalle(), listeDates.get(j));
 				
 				if(resa != null){
+					JPanel resaPanel = new JPanel();
 					
-					JTextArea resaPanel = new JTextArea (); // A remplacer par requete select * from reservation where salle=i and ...
-					resaPanel.setText(resa.getPromoResa().getNomPromo()
-							+"\n"+resa.getFormateurResa().getPrenomFormateur()+" "+resa.getFormateurResa().getNomFormateur()
-							+"\n"+resa.getMatiereResa());
+					JLabel resaPanelPromo = new JLabel(resa.getPromoResa().getNomPromo()); // A remplacer par requete select * from reservation where salle=i and ...
+					JLabel resaPanelForm = new JLabel(resa.getFormateurResa().getPrenomFormateur()+" "+resa.getFormateurResa().getNomFormateur());
+					JLabel resaPanelMatiere = new JLabel(resa.getMatiereResa());	
+					
 					resaPanel.setBackground(new Color(144, 147, 146));
 					resaPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+					resaPanel.setLayout(new BoxLayout(resaPanel, BoxLayout.Y_AXIS));
+					
+					resaPanel.add(resaPanelPromo);
+					resaPanel.add(resaPanelForm);
+					resaPanel.add(resaPanelMatiere);
+					resaPanel.addMouseListener(new resaListener(resa));
+					
 					grille.add(resaPanel);
+					
 				}
 				else {
 					
 					JPanel blanco = new JPanel();
 					blanco.setBackground(Color.WHITE);
+					blanco.addMouseListener(new addResaListener(listeSalle.get(i).getNomSalle()));
 					grille.add(blanco);
 				}
 				
@@ -219,14 +234,6 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 		contenant.add(grille, BorderLayout.CENTER);
 	}
 	
-	void PopUpReserver()
-	{
-		JPopupMenu popResa = new JPopupMenu("Réserver");
-		popResa.add(new JMenu("Resa"));
-	
-		this.addMouseListener(this);
-		
-	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -236,7 +243,10 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 			
 		}
 		
+		
+		
 	}
+	
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -276,7 +286,131 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 	public void refresh(){
 		controler.setDate();
 	}
+	
+	class resaListener implements MouseListener {
+		
+		Reservation resa;
 
+		/**
+		 * 
+		 */
+		public resaListener(Reservation resa) {
+			super();
+			this.resa = resa;
+			
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			
+			if (e.getButton() == MouseEvent.BUTTON3){
+				
+				resaPopup.add(delresa);
+				resaPopup.show(e.getComponent(), e.getX(), e.getY());
+				
+				delresa.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						reservationDAO.delete(resa);
+						controler.refresh();
+						
+					}
+				});
+			}
+			
+			
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+	}
+	
+	class addResaListener implements MouseListener{
+		String nomSalle;
+		
+		
+
+		/**
+		 * 
+		 */
+		public addResaListener(String nomSalle) {
+			super();
+			this.nomSalle = nomSalle;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(e.getButton()== MouseEvent.BUTTON3){
+				resaPopup.add(addresa);
+				resaPopup.show(e.getComponent(), e.getX(), e.getY());
+				addresa.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+		}
+
+		/**
+		 * 
+		 */
+		
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
 	@Override
 	public void update(Observable o, Object obj) {
 		// TODO Auto-generated method stub
@@ -294,12 +428,22 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 			mercredi.setText(mod.getSemaine().get(2));
 			jeudi.setText(mod.getSemaine().get(3));
 			vendredi.setText(mod.getSemaine().get(4));
+			//this.setVisible(false);
+			//this.setVisible(true);
 			
 			GrilleSemaine();
+			
+			this.validate();
+			System.out.println("update");
 			
 			
 			
 		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 		

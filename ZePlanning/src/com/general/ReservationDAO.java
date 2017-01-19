@@ -164,8 +164,7 @@ public class ReservationDAO extends DAO<Reservation>{
                 	ResultSet.TYPE_SCROLL_INSENSITIVE, 
                 	ResultSet.CONCUR_UPDATABLE
                  ).executeUpdate(
-                	"DELETE FROM reservation WHERE id_reservation = " + obj.getIdResa()+" ; "
-                			+ "DELETE FROM join_table WHERE id_reservation = " + obj.getIdResa()
+                	"DELETE FROM join_table WHERE id_reservation = " + obj.getIdResa()
                  );
 
 	    } catch (SQLException e) {

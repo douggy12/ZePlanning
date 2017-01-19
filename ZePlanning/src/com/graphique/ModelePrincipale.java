@@ -38,7 +38,7 @@ public class ModelePrincipale extends Observable {
 		weekNum = now.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		year = now.get(IsoFields.WEEK_BASED_YEAR);
 		
-		System.out.println(weekNum + "-"+year);
+		
 		
 	}
 	
@@ -85,6 +85,7 @@ public class ModelePrincipale extends Observable {
 	public void refreshVue(){
 		setChanged();				//signale qu'il y a eu des changements
 		notifyObservers(this); 		//previent les observateurs du changement
+		
 		
 	}
 	
