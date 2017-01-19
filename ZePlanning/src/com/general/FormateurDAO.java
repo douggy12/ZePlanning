@@ -24,6 +24,23 @@ public class FormateurDAO extends DAO<Formateur>{
 		}
 		return formateur;
 	}
+	
+public Formateur find(String nom) {
+		
+		Formateur formateur = new Formateur();
+		
+		try{
+			ResultSet result  = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
+					.executeQuery("SELECT * FROM formateur WHERE nom_formateur = " + nom);
+			
+			if(result.first()){
+				formateur = new Formateur(result.getInt("id_formateur"), result.getString("nom_formateur"), result.getString("prenom_formateur"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return formateur;
+	}
 
 	@Override
 	public Formateur create(Formateur obj) {
@@ -127,8 +144,30 @@ public class FormateurDAO extends DAO<Formateur>{
 
 	@Override
 	public ArrayList<Formateur> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<Formateur> listeFormateur = new ArrayList<>();
+		try {
+            ResultSet result = this .connect
+                                    .createStatement(
+                                            	ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                                                ResultSet.CONCUR_UPDATABLE
+                                             ).executeQuery(
+                                                "SELECT * FROM formateur"
+                                             );
+            
+            		while(result.next()){
+            			listeFormateur.add(new Formateur(result.getInt("id_formateur"), 
+            					result.getString("nom_formateur"), 
+            					result.getString("prenom_formateur")));
+                            
+            		}
+            
+		    } catch (SQLException e) {
+		            e.printStackTrace();
+		    }
+			
+		   return listeFormateur;
+
 	}
 	
 	

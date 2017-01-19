@@ -1,17 +1,12 @@
 package com.graphique;
 
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.IsoFields;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.Observable;
 
 public class ModelePrincipale extends Observable {
@@ -87,6 +82,7 @@ public class ModelePrincipale extends Observable {
 		notifyObservers(this); 		//previent les observateurs du changement
 		
 		
+
 	}
 	
 	
