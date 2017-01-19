@@ -217,7 +217,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 					
 					JPanel blanco = new JPanel();
 					blanco.setBackground(Color.WHITE);
-					blanco.addMouseListener(new addResaListener(listeSalle.get(i).getNomSalle()));
+					blanco.addMouseListener(new addResaListener(listeSalle.get(i),listeDates.get(j)));
 					grille.add(blanco);
 				}
 				
@@ -352,16 +352,17 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	}
 	
 	class addResaListener implements MouseListener{
-		String nomSalle;
-		
+		Salle salle;
+		String date;
 		
 
 		/**
 		 * 
 		 */
-		public addResaListener(String nomSalle) {
+		public addResaListener(Salle salle, String date) {
 			super();
-			this.nomSalle = nomSalle;
+			this.salle = salle;
+			this.date = date;
 		}
 
 		@Override
@@ -373,7 +374,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
+						//VueReserver vuereserver = new VueReserver(nomSalle,date);
 						
 					}
 				});
