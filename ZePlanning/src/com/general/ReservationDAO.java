@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ReservationDAO extends DAO<Reservation>{
 
@@ -166,6 +167,12 @@ try {
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public ArrayList<Reservation> findAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

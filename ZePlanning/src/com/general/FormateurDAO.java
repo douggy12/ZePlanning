@@ -3,6 +3,7 @@ package com.general;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class FormateurDAO extends DAO<Formateur>{
 
@@ -17,6 +18,23 @@ public class FormateurDAO extends DAO<Formateur>{
 			
 			if(result.first()){
 				formateur = new Formateur(id, result.getString("nom_formateur"), result.getString("prenom_formateur"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return formateur;
+	}
+	
+public Formateur find(String nom) {
+		
+		Formateur formateur = new Formateur();
+		
+		try{
+			ResultSet result  = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
+					.executeQuery("SELECT * FROM formateur WHERE nom_formateur = " + nom);
+			
+			if(result.first()){
+				formateur = new Formateur(result.getInt("id_formateur"), result.getString("nom_formateur"), result.getString("prenom_formateur"));
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -122,6 +140,32 @@ public class FormateurDAO extends DAO<Formateur>{
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public ArrayList<Formateur> findAll() {
+		ArrayList<Formateur> listeFormateur = new ArrayList<>();
+		try {
+            ResultSet result = this .connect
+                                    .createStatement(
+                                            	ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                                                ResultSet.CONCUR_UPDATABLE
+                                             ).executeQuery(
+                                                "SELECT * FROM formateur"
+                                             );
+            
+            		while(result.next()){
+            			listeFormateur.add(new Formateur(result.getInt("id_formateur"), 
+            					result.getString("nom_formateur"), 
+            					result.getString("prenom_formateur")));
+                            
+            		}
+            
+		    } catch (SQLException e) {
+		            e.printStackTrace();
+		    }
+			
+		   return listeFormateur;
 	}
 	
 	

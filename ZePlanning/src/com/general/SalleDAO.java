@@ -3,6 +3,7 @@ package com.general;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class SalleDAO extends DAO<Salle>{
 
@@ -34,6 +35,9 @@ public class SalleDAO extends DAO<Salle>{
 		    }
 		   return salle;
 	}
+	
+	
+	
 
 	@Override
 	public Salle create(Salle obj) {
@@ -154,5 +158,37 @@ try {
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public ArrayList<Salle> findAll() {
+		ArrayList<Salle> listeSalle = new ArrayList<>();
+		try {
+            ResultSet result = this .connect
+                                    .createStatement(
+                                            	ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                                                ResultSet.CONCUR_UPDATABLE
+                                             ).executeQuery(
+                                                "SELECT * FROM salle_de_cours"
+                                             );
+
+            		while(result.next()){
+            			listeSalle.add(new Salle(
+                                result.getInt("id_salle"),
+                                result.getInt("num_salle"),
+                                result.getInt("nb_pc"),
+                                result.getInt("nb_bureaux"),
+                                result.getInt("nb_chaises"),
+                                result.getBoolean("videoprojecteur"),
+                                result.getBoolean("tableau"),
+                                result.getString("nom_salle")
+                            ));
+            		}
+            
+		    } catch (SQLException e) {
+		            e.printStackTrace();
+		    }
+		   return listeSalle;
+		
 	}
 }

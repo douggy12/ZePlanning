@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class FenetreGerer extends JFrame
+public class VueGerer extends JFrame
 {
 	private String item;
 	private JLabel ajouter = new JLabel ("");
@@ -20,7 +20,7 @@ public class FenetreGerer extends JFrame
 	private JButton OK = new JButton("OK");
 	
 	
-	public FenetreGerer(String item)
+	public VueGerer(String item)
 	{
 		this.item=item;
 		
@@ -36,19 +36,18 @@ public class FenetreGerer extends JFrame
 		
 		ajouter.setText("Ajouter "+item+":");
 		
-		formulaire();
+//		formulaire();
 
 		this.setVisible(true);
 	}
 	
-	void formulaire()
-	{
+//	void formulaire()
+//	{
 //		contenant.add(, BorderLayout.NORTH);
 //		saisie.add(formulaire1, BorderLayout.CENTER);
 //		saisie.add(formulaire2, BorderLayout.CENTER);
 //		saisie.add(OK, BorderLayout.SOUTH);
 //	}
 	
-	}
 }
 //
