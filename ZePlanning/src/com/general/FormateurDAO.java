@@ -3,6 +3,7 @@ package com.general;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class FormateurDAO extends DAO<Formateur>{
 
@@ -122,6 +123,12 @@ public class FormateurDAO extends DAO<Formateur>{
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public ArrayList<Formateur> findAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

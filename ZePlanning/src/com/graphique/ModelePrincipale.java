@@ -7,7 +7,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.IsoFields;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Observable;
@@ -18,6 +20,9 @@ public class ModelePrincipale extends Observable {
 	
 	private int weekNum = 0;
 	private int year = 0;
+	
+	ArrayList<String> listeJours = new ArrayList<>();
+	ArrayList<String> listeDates = new ArrayList<>();
 
 	
 	
@@ -42,14 +47,20 @@ public class ModelePrincipale extends Observable {
 		this.year = year;
 
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy,M,d");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat stringFormat = new SimpleDateFormat("EEEE d MMMM");
 
 		gc.setFirstDayOfWeek(1);
+		listeJours.clear();
+		listeDates.clear();
 
 		for (int i = 2; i <= 6 ; i++){
 
 			gc.setWeekDate(year, weekNum, i);
-			System.out.println(dateFormat.format(gc.getTime()));
+			
+			
+			listeJours.add(stringFormat.format(gc.getTime()));
+			listeDates.add(dateFormat.format(gc.getTime()));
 		}
 		setChanged();				//signale qu'il y a eu des changements
 		notifyObservers(this); 		//previent les observateurs du changement
@@ -63,10 +74,18 @@ public class ModelePrincipale extends Observable {
 		return year;
 	}
 	
+	public ArrayList<String> getSemaine(){
+		return listeJours;
+	}
+	
+	public ArrayList<String> getDates(){
+		return listeDates;
+	}
+	
 	public void refreshVue(){
 		setChanged();				//signale qu'il y a eu des changements
 		notifyObservers(this); 		//previent les observateurs du changement
-		System.out.println("houhou");
+		
 	}
 	
 	

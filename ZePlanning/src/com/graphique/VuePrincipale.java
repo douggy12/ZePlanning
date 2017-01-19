@@ -10,6 +10,8 @@ import java.awt.event.MouseListener;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.IsoFields;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -24,14 +26,27 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JSpinner.ListEditor;
+
+import com.general.DAO;
+import com.general.Reservation;
+import com.general.ReservationDAO;
+import com.general.Salle;
+import com.general.SalleDAO;
 
 public class VuePrincipale extends JFrame implements MouseListener, Observer
 {
 	private ControlleurPrincipale controler;
-	private int nbSalles=5;
+	
 	private JPanel contenant = new JPanel(); // pour contenant
 	private JPanel navi = new JPanel(); //  pour BoxLayout
 	private JPanel grille = new JPanel(); // pour GridLayout
+	
+	JLabel lundi = new JLabel("lundi");
+	JLabel mardi = new JLabel("mardi");
+	JLabel mercredi = new JLabel("mercredi");
+	JLabel jeudi = new JLabel("jeudi");
+	JLabel vendredi = new JLabel("vendredi");
 	
 	private JButton navLeft = new JButton("Précédente");
 	private JButton navRight = new JButton("Suivante");
@@ -47,8 +62,18 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 	
 	private String ville="Le Mans";
 	private JLabel etablissement = new JLabel(ville);
-	private String ListeJours[]={"Lundi", "Mardi", "Mercredi","Jeudi","Vendredi"};
-	private String ListeSalles[]={"Salle 1", "Salle 2", "Salle 3", "Salle 4", "Salle 5"};
+	
+	DAO<Salle> salleDAO = new SalleDAO();
+	ReservationDAO reservationDAO = new ReservationDAO();
+	
+	private ArrayList<String> listeJours= new ArrayList<>();
+	private ArrayList<String> listeDates = new ArrayList<>();
+	private ArrayList<Salle> listeSalle = salleDAO.findAll();
+	private ArrayList<Reservation> listeResa;
+	
+	private String formateur;
+	private String promo;
+	private String matiere;
 
 	
 	public VuePrincipale (ControlleurPrincipale controler)
@@ -59,22 +84,25 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.setBackground(Color.WHITE);
-		
-		
-		
+				
 		contenant.setLayout(new BorderLayout());
-		getContentPane().add(contenant);
-		
-		MenuBar();
-		SemNavigation();
-		GrilleSemaine();
-		
-		PopUpReserver();
-		
+		setContentPane(contenant);
+			
+		init();
 		refresh();
 		this.setVisible(true);
 		
 		
+		
+		
+	}
+	public void init(){
+		
+		
+		MenuBar();
+		SemNavigation();
+		GrilleSemaine();
+		PopUpReserver();
 	}
 		
 	void MenuBar()
@@ -114,39 +142,79 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 		navRight.addActionListener(new btnSemaine());
 	}
 	
-	void GrilleSemaine()
-	{
+	
+	
+	void GrilleSemaine(){
+		
+		grille.removeAll();
 		grille.setLayout(new GridLayout(0,6));
 		etablissement.setBorder(BorderFactory.createLineBorder(Color.black));
 		etablissement.setOpaque(true);
 		etablissement.setBackground(new Color(144, 147, 146));
 		//etablissement.setForeground(setFont(f););
 		grille.add(etablissement);
-		for (int j=0; j<ListeJours.length; j++)
+		
+		
+		grille.add(lundi);
+		lundi.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		grille.add(mardi);
+		mardi.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		grille.add(mercredi);
+		mercredi.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		grille.add(jeudi);
+		jeudi.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		grille.add(vendredi);
+		vendredi.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		/*for (int j=0; j<listeJours.size(); j++)
 		{
-			JLabel jours = new JLabel(ListeJours[j]);
+			JLabel jours = new JLabel(listeJours.get(j));
 			jours.setBorder(BorderFactory.createLineBorder(Color.black));
 			grille.add(jours);
-		}
+		}*/
 		
-		for (int i=0; i<nbSalles;i++)
+		for (int i=0; i<listeSalle.size();i++)
 		{
-			JLabel salle = new JLabel(ListeSalles[i]);
+			JLabel salle = new JLabel(listeSalle.get(i).getNomSalle());
+			
+			
 			salle.setBorder(BorderFactory.createLineBorder(Color.black));
 			grille.add(salle);
-			for (int j=0; j<ListeJours.length;j++)
+			
+			for (int j=0; j<listeJours.size();j++)
 			{
-
-				JTextArea resa = new JTextArea (); // A remplacer par requete select * from reservation where salle=i and ...
-				resa.setText("\n1\n2\n3\n");
-				resa.setBackground(new Color(144, 147, 146));
-				resa.setBorder(BorderFactory.createLineBorder(Color.black));
-				grille.add(resa);
+				Reservation resa = reservationDAO.findByDate(listeSalle.get(i).getNomSalle(), listeDates.get(j));
+				
+				if(resa != null){
+					
+					JTextArea resaPanel = new JTextArea (); // A remplacer par requete select * from reservation where salle=i and ...
+					resaPanel.setText(resa.getPromoResa().getNomPromo()
+							+"\n"+resa.getFormateurResa().getPrenomFormateur()+" "+resa.getFormateurResa().getNomFormateur()
+							+"\n"+resa.getMatiereResa());
+					resaPanel.setBackground(new Color(144, 147, 146));
+					resaPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+					grille.add(resaPanel);
+				}
+				else {
+					
+					JPanel blanco = new JPanel();
+					blanco.setBackground(Color.WHITE);
+					grille.add(blanco);
+				}
+				
+				
 				
 			}
 			
 			
+			
+			
 		}
+		System.out.println(listeDates.size());
 		
 		contenant.add(grille, BorderLayout.CENTER);
 	}
@@ -213,10 +281,23 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer
 	public void update(Observable o, Object obj) {
 		// TODO Auto-generated method stub
 		if(o instanceof ModelePrincipale){
-			System.out.println("hrey");
+			
 			ModelePrincipale mod = (ModelePrincipale)obj;
 			yearNumber.setText(mod.getYear()+"");
 			weekNumber.setText(mod.getWeekNum()+"");
+			
+			listeJours = mod.getSemaine();
+			listeDates = mod.getDates();
+			
+			lundi.setText(mod.getSemaine().get(0));
+			mardi.setText(mod.getSemaine().get(1));
+			mercredi.setText(mod.getSemaine().get(2));
+			jeudi.setText(mod.getSemaine().get(3));
+			vendredi.setText(mod.getSemaine().get(4));
+			
+			GrilleSemaine();
+			
+			
 			
 		}
 	}

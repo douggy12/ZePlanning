@@ -10,9 +10,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-//		DAO<Reservation> reservationDAO = new ReservationDAO();
+		DAO<Reservation> reservationDAO = new ReservationDAO();
 //		
-//		System.out.println(reservationDAO.find(3));
+		System.out.println(reservationDAO.find(3));
 	
 		
 
@@ -43,7 +43,7 @@ public class Main {
 		
 		//System.out.println(promoDAO.count());
 		
-		VuePrincipale fenetre = new VuePrincipale();
+		//VuePrincipale fenetre = new VuePrincipale();
 		
 		
 		

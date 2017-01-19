@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Reservation {
 	
 	private int idResa;
-	private LocalDate dateResa;
+	private String dateResa;
 	private Salle salleResa;
 	private Promo promoResa;
 	private Formateur formateurResa;
@@ -20,7 +20,7 @@ public class Reservation {
 	 * @param formateurResa
 	 * @param matiereResa
 	 */
-	public Reservation(int id,LocalDate dateResa, Salle salleResa, Promo promoResa, Formateur formateurResa, String matiereResa, Ecole ecoleResa) {
+	public Reservation(int id,String dateResa, Salle salleResa, Promo promoResa, Formateur formateurResa, String matiereResa, Ecole ecoleResa) {
 		
 		this.idResa = id;
 		this.dateResa = dateResa;
@@ -40,12 +40,12 @@ public class Reservation {
 	public Reservation(){}
 
 
-	public LocalDate getDateResa() {
+	public String getDateResa() {
 		return dateResa;
 	}
 
 
-	public void setDateResa(LocalDate dateResa) {
+	public void setDateResa(String dateResa) {
 		this.dateResa = dateResa;
 	}
 

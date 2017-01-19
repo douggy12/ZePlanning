@@ -168,7 +168,7 @@ try {
                                              ).executeQuery(
                                                 "SELECT * FROM salle_de_cours"
                                              );
-            if(result.first())
+            
             		while(result.next()){
             			listeSalle.add(new Salle(
                                 result.getInt("id_salle"),

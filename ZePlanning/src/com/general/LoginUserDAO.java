@@ -3,6 +3,7 @@ package com.general;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class LoginUserDAO extends DAO<LoginUser> {
 
@@ -103,6 +104,12 @@ public class LoginUserDAO extends DAO<LoginUser> {
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public ArrayList<LoginUser> findAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

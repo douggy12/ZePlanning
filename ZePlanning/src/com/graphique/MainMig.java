@@ -20,6 +20,8 @@ public class MainMig {
 		VuePrincipale vue = new VuePrincipale(controler);
 		
 		modele.addObserver(vue);
+		
+		controler.refresh();
 	}
 
 }

@@ -1,11 +1,54 @@
 package com.general;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ReservationDAO extends DAO<Reservation>{
+	
+	public Reservation findByDate(String nomSalle, String date) {
+		
+		Reservation resa = new Reservation();
+		try {
+            PreparedStatement prepare = this .connect
+                                    .prepareStatement("SELECT * FROM reservation, salle_de_cours, promo, formateur, ecole, join_table "
+                                            + "WHERE reservation.id_reservation = join_table.id_reservation "
+                                            + "AND join_table.id_salle = salle_de_cours.id_salle "
+                                            + "AND join_table.id_promo = promo.id_promo "
+                                            + "AND join_table.id_formateur = formateur.id_formateur "
+                                            + "AND join_table.id_ecole = ecole.id_ecole "
+                                            + "AND reservation.date = ? "
+                                            + "AND salle_de_cours.nom_salle = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            prepare.setString(1, date);
+            prepare.setString(2, nomSalle);
+            ResultSet result = prepare.executeQuery();
+            
+           
+            
+            if(result.first()){
+            		resa = new Reservation(
+            				result.getInt("id_reservation"),
+            				result.getString("date"), 
+            				new SalleDAO().find(result.getInt("id_salle")), 
+            				new PromoDAO().find(result.getInt("id_promo")), 
+            				new FormateurDAO().find(result.getInt("id_formateur")), 
+            				result.getString("matiere"), 
+            				new EcoleDAO().find(result.getInt("id_ecole"))
+            				);
+            		
+            		return resa;
+            		}
+            else return null;
+            
+		    } catch (SQLException e) {
+		            e.printStackTrace();
+		    }
+		return null;
+	}
 
 	@Override
 	public Reservation find(int id) {
@@ -28,7 +71,7 @@ public class ReservationDAO extends DAO<Reservation>{
             if(result.first())
             		resa = new Reservation(
             				id,
-            				result.getObject("date", LocalDate.class), 
+            				result.getString("date"), 
             				new SalleDAO().find(result.getInt("id_salle")), 
             				new PromoDAO().find(result.getInt("id_promo")), 
             				new FormateurDAO().find(result.getInt("id_formateur")), 
@@ -166,6 +209,12 @@ try {
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public ArrayList<Reservation> findAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

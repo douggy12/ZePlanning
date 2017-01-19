@@ -3,6 +3,7 @@ package com.general;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PromoDAO extends DAO<Promo> {
 
@@ -138,6 +139,12 @@ try {
     }
 		
 		
+	}
+
+	@Override
+	public ArrayList<Promo> findAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
