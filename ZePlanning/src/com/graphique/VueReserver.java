@@ -26,6 +26,7 @@ import com.general.FormateurDAO;
 import com.general.Promo;
 import com.general.PromoDAO;
 import com.general.Reservation;
+import com.general.ReservationDAO;
 import com.general.Salle;
 import com.general.SalleDAO;
 
@@ -66,13 +67,17 @@ public class VueReserver extends JFrame implements MouseListener{
 	PromoDAO promoDAO = new PromoDAO();
 	EcoleDAO ecoleDAO = new EcoleDAO();
 	FormateurDAO formateurDAO = new FormateurDAO();
+	ReservationDAO resaDAO = new ReservationDAO();
 	
-	public VueReserver(Salle salle, String date)
+	ControlleurPlanning controler;
+	
+	public VueReserver(Salle salle, String date, ControlleurPlanning controler)
 	{
+		this.controler = controler;
 		this.setTitle("Réservation");
 		this.setSize(600,300);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.salleSel = salle;
 		this.dateSel = date;
 		
@@ -118,7 +123,7 @@ public class VueReserver extends JFrame implements MouseListener{
 			});
 			salle.add(salles);	
 		}
-		salle.addMouseListener(this);
+
 			
 	}
 
@@ -145,7 +150,7 @@ public class VueReserver extends JFrame implements MouseListener{
 			promo.add(promos);
 
 		}
-		promos.addActionListener(new boutAjouRéservation());
+//		promos.addActionListener(new boutAjouRéservation());
 		formateurs = new JComboBox<String>();
 
 		Iterator<Formateur> ite = formateurDAO.findAll().iterator();
@@ -197,14 +202,14 @@ public class VueReserver extends JFrame implements MouseListener{
 		ajou.addActionListener(new boutAjouRéservation());
 		boutFin.add(annul);
 		annul.addMouseListener(this);
-//		boutFin.addMouseListener(this);
+		
 		container.add(boutFin);
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stud
-			this.dispose();
+		dispose();	
 	}
 
 	public class boutAjouRéservation implements ActionListener
@@ -214,19 +219,19 @@ public class VueReserver extends JFrame implements MouseListener{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Formateur formateur = formateurDAO.find(formateurs.getSelectedItem().toString());
+			Promo promo = promoDAO.find(promos.getSelectedItem().toString());
+
 			System.out.println(promos.getSelectedItem());
 			System.out.println(formateurs.getSelectedItem());
 			
-			Reservation reservation = new Reservation(0, dateSel, salleSel, promoResa, formateur, text.getText(), ecoleDAO.find(1));
-//			Iterator<Promo> it = promoDAO.findAll().iterator();
-//			while (it.hasNext())
-//			{
-//				if ( promos.getSelectedItem() == promoDAO.findAll())
-//				{
-//					
-//					
-//				}
-//			}
+			Reservation reservation = new Reservation(0, dateSel, salleSel, promo, formateur, text.getText(), ecoleDAO.find(1));
+			
+			controler.ajouterResa(reservation);
+			
+			dispose();
+		
+			//resaDAO.create(reservation);
+			
 		}
 	}
 	

@@ -9,10 +9,12 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Observable;
 
+import com.general.Reservation;
+import com.general.ReservationDAO;
 import com.general.Salle;
 import com.general.SalleDAO;
 
-public class ModelePrincipale extends Observable {
+public class ModelePlanning extends Observable {
 	private ZoneId zoneid = ZoneId.of("Europe/Paris");
 	private Calendar gc = new GregorianCalendar();
 	
@@ -23,7 +25,11 @@ public class ModelePrincipale extends Observable {
 	ArrayList<String> listeDates = new ArrayList<>();
 	
 	private ArrayList<Salle> listeSalle;
+	
+	
+	
 	SalleDAO salleDAO = new SalleDAO();
+	ReservationDAO resaDAO = new ReservationDAO();
 
 	
 	
@@ -31,7 +37,7 @@ public class ModelePrincipale extends Observable {
 	/**
 	 * Construit sur la base de la semaine actuelle
 	 */
-	public ModelePrincipale(){
+	public ModelePlanning(){
 		//LocalDate now = LocalDate.now();
 		//gc.set(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		//gc.set(2017, 12, 17);
@@ -42,6 +48,7 @@ public class ModelePrincipale extends Observable {
 		
 		
 		this.listeSalle =  salleDAO.findAll();
+		
 		
 		
 		
@@ -115,12 +122,21 @@ public class ModelePrincipale extends Observable {
 	}
 	
 	
-	 
-	/* Ne sert à rien
-	private String dateFormat(Object obj){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy,M,d");
-		return dateFormat.format(obj);
+	
+	
+
+	public void ajouterResa(Reservation resa){
+		resaDAO.create(resa);
+		refreshVue();
+		
 	}
-*/
+	
+	public void supprimerResa(Reservation resa){
+		resaDAO.delete(resa);
+		refreshVue();
+	}
+	
+	
+	 
 
 }

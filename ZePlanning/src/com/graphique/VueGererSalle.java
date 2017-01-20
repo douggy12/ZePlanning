@@ -1,6 +1,6 @@
 package com.graphique;
 
-import java.awt.Component;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComboBox;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,11 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.general.Salle;
-import com.general.SalleDAO;
+
 
 public class VueGererSalle extends JFrame
 {
-	private int salle;
+	
 	private JPanel contenant = new JPanel();
 	private JPanel top = new JPanel();
 	private JPanel middle = new JPanel();
@@ -50,16 +50,16 @@ public class VueGererSalle extends JFrame
 	private JCheckBoxMenuItem tickTableau = new JCheckBoxMenuItem();
 	private JCheckBoxMenuItem tickVideopro = new JCheckBoxMenuItem();
 	
-	private ControlleurPrincipale controler;
+	private ControlleurPlanning controler;
 	
-	public VueGererSalle(ControlleurPrincipale controler)
+	public VueGererSalle(ControlleurPlanning controler)
 	{
 		this.controler = controler;
-		this.salle=salle;
+		
 		this.setTitle("Gérer Salle");
 		this.setSize(350,480);
 		this.setLocationRelativeTo(null);
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//this.setBackground(Color.WHITE);
 
 		setContentPane(contenant);
@@ -132,6 +132,7 @@ public class VueGererSalle extends JFrame
 	{
 		validation.setLayout(new BoxLayout(validation, BoxLayout.LINE_AXIS));
 		validation.add(enregistrer);
+
 		enregistrer.addActionListener(new ActionListener() {
 			
 			@Override
@@ -166,4 +167,5 @@ public class VueGererSalle extends JFrame
 			}
 		});
 	}
+
 }

@@ -31,10 +31,10 @@ public Formateur find(String nom) {
 		
 		try{
 			ResultSet result  = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
-					.executeQuery("SELECT * FROM formateur WHERE nom_formateur = " + nom);
+					.executeQuery("SELECT * FROM formateur WHERE nom_formateur = '" + nom+"'");
 			
 			if(result.first()){
-				formateur = new Formateur(result.getInt("id_formateur"), result.getString("nom_formateur"), result.getString("prenom_formateur"));
+				formateur = new Formateur(result.getInt("id_formateur"), nom, result.getString("prenom_formateur"));
 			}
 		}catch(SQLException e){
 			e.printStackTrace();

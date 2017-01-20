@@ -1,15 +1,16 @@
 package com.graphique;
 
+import com.general.Reservation;
 import com.general.Salle;
 import com.general.SalleDAO;
 
-public class ControlleurPrincipale {
-	private ModelePrincipale modele;
+public class ControlleurPlanning {
+	private ModelePlanning modele;
 
 	/**
 	 * @param modele
 	 */
-	public ControlleurPrincipale(ModelePrincipale modele) {
+	public ControlleurPlanning(ModelePlanning modele) {
 		
 		this.modele = modele;
 	}
@@ -37,6 +38,14 @@ public class ControlleurPrincipale {
 	
 	public void supprimerSalle(Salle salle){
 		modele.supprimerSalle(salle);
+	}
+	
+	public void ajouterResa(Reservation resa){
+		modele.ajouterResa(resa);
+	}
+	
+	public void supprimerResa(Reservation resa){
+		modele.supprimerResa(resa);
 	}
 	
 

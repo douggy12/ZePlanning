@@ -105,11 +105,11 @@ public class ReservationDAO extends DAO<Reservation>{
                                                     		"INSERT INTO reservation (id_reservation, date, matiere) VALUES(?, ?, ?); "
                                                     		+ "INSERT INTO join_table (id_reservation, id_salle, id_formateur, id_promo, id_ecole) VALUES(?, ?, ?, ?, ?)"
                                                     );
-    			System.out.println(id);
+    			
 				prepare.setInt(1, id);
 				prepare.setObject(2, obj.getDateResa());
 				prepare.setString(3, obj.getMatiereResa().toString());
-				prepare.setInt(4, obj.getIdResa());
+				prepare.setInt(4, id);
 				prepare.setInt(5, obj.getSalleResa().getIdSalle());
 				prepare.setInt(6, obj.getFormateurResa().getIdFormateur());
 				prepare.setInt(7, obj.getPromoResa().getIdPromo());
@@ -165,7 +165,7 @@ public class ReservationDAO extends DAO<Reservation>{
                 	ResultSet.TYPE_SCROLL_INSENSITIVE, 
                 	ResultSet.CONCUR_UPDATABLE
                  ).executeUpdate(
-                	"DELETE FROM join_table WHERE id_reservation = " + obj.getIdResa()
+                	"DELETE FROM reservation WHERE id_reservation = " + obj.getIdResa()
                  );
 
 	    } catch (SQLException e) {

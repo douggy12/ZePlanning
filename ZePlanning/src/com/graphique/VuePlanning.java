@@ -2,6 +2,7 @@ package com.graphique;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JSpinner.ListEditor;
 
 import com.general.DAO;
@@ -36,19 +38,19 @@ import com.general.ReservationDAO;
 import com.general.Salle;
 import com.general.SalleDAO;
 
-public class VuePrincipale extends JFrame implements MouseListener, Observer, ActionListener
+public class VuePlanning extends JFrame implements MouseListener, Observer, ActionListener
 {
-	private ControlleurPrincipale controler;
+	private ControlleurPlanning controler;
 	
 	private JPanel contenant = new JPanel(); // pour contenant
 	private JPanel navi = new JPanel(); //  pour BoxLayout
 	private JPanel grille = new JPanel(); // pour GridLayout
 	
-	JLabel lundi = new JLabel("lundi");
-	JLabel mardi = new JLabel("mardi");
-	JLabel mercredi = new JLabel("mercredi");
-	JLabel jeudi = new JLabel("jeudi");
-	JLabel vendredi = new JLabel("vendredi");
+	JLabel lundi = new JLabel("lundi",SwingConstants.CENTER);
+	JLabel mardi = new JLabel("mardi",SwingConstants.CENTER);
+	JLabel mercredi = new JLabel("mercredi",SwingConstants.CENTER);
+	JLabel jeudi = new JLabel("jeudi",SwingConstants.CENTER);
+	JLabel vendredi = new JLabel("vendredi",SwingConstants.CENTER);
 	
 	private JButton navLeft = new JButton("Précédente");
 	private JButton navRight = new JButton("Suivante");
@@ -62,12 +64,10 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	private JTextField weekNumber = new JTextField(Integer.toString(weekNum)); // texte à updater
 	private JPopupMenu popResa;
 	
-	private JPopupMenu popupItem = new JPopupMenu();
-	private JMenuItem delItem = new JMenuItem("supprimer");
-	private JMenuItem reserverItem = new JMenuItem("réserver");
 	
-	private String ville="Le Mans";
-	private JLabel etablissement = new JLabel(ville);
+	
+	private String ville="Campus du Mans";
+	private JLabel etablissement = new JLabel(ville,SwingConstants.CENTER);
 	
 	DAO<Salle> salleDAO = new SalleDAO();
 	ReservationDAO reservationDAO = new ReservationDAO();
@@ -75,14 +75,11 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	private ArrayList<String> listeJours= new ArrayList<>();
 	private ArrayList<String> listeDates = new ArrayList<>();
 	
-	private ArrayList<Reservation> listeResa;
+	private Font salleFont = new Font("Arial", Font.BOLD, 24);
 	
-	private String formateur;
-	private String promo;
-	private String matiere;
-
 	
-	public VuePrincipale (ControlleurPrincipale controler)
+	
+	public VuePlanning (ControlleurPlanning controler)
 	{
 		this.controler = controler;
 		this.setTitle("IMIE - Planning des salles");
@@ -151,7 +148,7 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	
 	
 	
-	void GrilleSemaine(ModelePrincipale modele){
+	void GrilleSemaine(ModelePlanning modele){
 		
 		grille.removeAll();
 		grille.setLayout(new GridLayout(0,6));
@@ -186,12 +183,16 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		
 		for (int i=0; i<modele.getListeSalle().size();i++)
 		{
-			JLabel salle = new JLabel(modele.getListeSalle().get(i).getNomSalle());
+			JLabel sallePanel = new JLabel(modele.getListeSalle().get(i).getNomSalle(),SwingConstants.CENTER);
 			
 			
-			salle.setBorder(BorderFactory.createLineBorder(Color.black));
-			grille.add(salle);
-			salle.addMouseListener(new deleteSalleListener(modele.getListeSalle().get(i)));
+			sallePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+			
+			sallePanel.setFont(salleFont);
+			
+			
+			grille.add(sallePanel);
+			sallePanel.addMouseListener(new deleteSalleListener(modele.getListeSalle().get(i)));
 			
 			for (int j=0; j<listeJours.size();j++)
 			{
@@ -199,8 +200,13 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 				
 				if(resa != null){
 					JPanel resaPanel = new JPanel();
+					//resaPanel.setLayout(new BoxLayout(resaPanel, BoxLayout.Y_AXIS));
+					
 					
 					JLabel resaPanelPromo = new JLabel(resa.getPromoResa().getNomPromo()); // A remplacer par requete select * from reservation where salle=i and ...
+					resaPanelPromo.setAlignmentX(CENTER_ALIGNMENT);
+					resaPanelPromo.setForeground(Color.WHITE);
+					
 					JLabel resaPanelForm = new JLabel(resa.getFormateurResa().getPrenomFormateur()+" "+resa.getFormateurResa().getNomFormateur());
 					JLabel resaPanelMatiere = new JLabel(resa.getMatiereResa());	
 					
@@ -318,16 +324,17 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		public void mouseClicked(MouseEvent e) {
 			
 			if (e.getButton() == MouseEvent.BUTTON3){
+				JPopupMenu popup = new JPopupMenu();
+				JMenuItem del = new JMenuItem("supprimer");
+				popup.add(del);
+				popup.show(e.getComponent(), e.getX(), e.getY());
 				
-				popupItem.add(delItem);
-				popupItem.show(e.getComponent(), e.getX(), e.getY());
-				
-				delItem.addActionListener(new ActionListener() {
+				del.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						reservationDAO.delete(resa);
-						controler.refresh();
+						controler.supprimerResa(resa);
+						
 						
 					}
 				});
@@ -381,13 +388,15 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getButton()== MouseEvent.BUTTON3){
-				popupItem.add(reserverItem);
-				popupItem.show(e.getComponent(), e.getX(), e.getY());
-				reserverItem.addActionListener(new ActionListener() {
+				JPopupMenu popup = new JPopupMenu();
+				JMenuItem add = new JMenuItem("ajouter");
+				popup.add(add);
+				popup.show(e.getComponent(), e.getX(), e.getY());
+				add.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						//VueReserver vuereserver = new VueReserver(nomSalle,date);
+						VueReserver vuereserver = new VueReserver(salle,date,controler);
 						
 					}
 				});
@@ -440,15 +449,16 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if(e.getButton()== MouseEvent.BUTTON3){
-				
-				popupItem.add(delItem);
-				popupItem.show(e.getComponent(), e.getX(), e.getY());
-				delItem.addActionListener(new ActionListener() {
+				JPopupMenu popup = new JPopupMenu();
+				JMenuItem del = new JMenuItem("supprimer");
+				popup.add(del);
+				popup.show(e.getComponent(), e.getX(), e.getY());
+				del.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						controler.supprimerSalle(salle);
-						controler.refresh();
+						
 						
 					}
 				});
@@ -484,9 +494,9 @@ public class VuePrincipale extends JFrame implements MouseListener, Observer, Ac
 	@Override
 	public void update(Observable o, Object obj) {
 		// TODO Auto-generated method stub
-		if(o instanceof ModelePrincipale){
+		if(o instanceof ModelePlanning){
 			
-			ModelePrincipale mod = (ModelePrincipale)obj;
+			ModelePlanning mod = (ModelePlanning)obj;
 			yearNumber.setText(mod.getYear()+"");
 			weekNumber.setText(mod.getWeekNum()+"");
 			

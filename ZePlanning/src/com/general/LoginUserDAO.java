@@ -6,6 +6,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LoginUserDAO extends DAO<LoginUser> {
+	
+	public LoginUser find(String userid) {
+		LoginUser loginUser = new LoginUser();
+
+		try{
+			ResultSet result  = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
+					.executeQuery("SELECT * FROM login_user WHERE user_name =  '"+ userid+"'");
+
+			if(result.first()){
+				loginUser = new LoginUser(result.getInt("id_user"), result.getInt("user_level"), result.getString("user_name"), result.getString("user_pwd"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return loginUser;
+	}
 
 	@Override
 	public LoginUser find(int id) {
@@ -13,15 +29,17 @@ public class LoginUserDAO extends DAO<LoginUser> {
 
 		try{
 			ResultSet result  = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
-					.executeQuery("SELECT * FROM user WHERE id_user = " + id);
+					.executeQuery("SELECT * FROM login_user WHERE id_user = " + id);
 
 			if(result.first()){
 				loginUser = new LoginUser(id, result.getInt("user_level"), result.getString("user_name"), result.getString("user_pwd"));
+				return loginUser;
 			}
+			else return null;
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		return loginUser;
+		return null;
 	}
 
 	@Override
@@ -54,7 +72,7 @@ public class LoginUserDAO extends DAO<LoginUser> {
 	public LoginUser update(LoginUser obj) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeQuery("UPDATE user SET user_level = '" + obj.getUserLvl()+"', user_name ='"+ obj.getLogin()+"', user_pwd ='"+ obj.getMdp()+" WHERE user_id = "+obj.getIdUser());
+			.executeQuery("UPDATE login_user SET user_level = '" + obj.getUserLvl()+"', user_name ='"+ obj.getLogin()+"', user_pwd ='"+ obj.getMdp()+" WHERE user_id = "+obj.getIdUser());
 			
 			obj = this.find(obj.getIdUser());
 		}catch(SQLException e){
@@ -68,7 +86,7 @@ public class LoginUserDAO extends DAO<LoginUser> {
 	public void delete(LoginUser obj) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeUpdate("DELETE FROM user WHERE id_user = "+obj.getIdUser());
+			.executeUpdate("DELETE FROM login_user WHERE id_user = "+obj.getIdUser());
 			
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -80,7 +98,7 @@ public class LoginUserDAO extends DAO<LoginUser> {
 	public void deleteById(int id) {
 		try{
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE)
-			.executeUpdate("DELETE FROM user WHERE id_user = "+id);
+			.executeUpdate("DELETE FROM login_user WHERE id_user = "+id);
 			
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -95,7 +113,7 @@ public class LoginUserDAO extends DAO<LoginUser> {
 			ResultSet result =
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE)
-			.executeQuery("SELECT COUNT (*) FROM user");
+			.executeQuery("SELECT COUNT (*) FROM login_user");
 			if(result.first())
 			{
 				count = result.getInt("count");

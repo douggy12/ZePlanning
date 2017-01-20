@@ -2,29 +2,34 @@ package com.graphique;
 
 public class Main {
 
+	
+	
 	public static void main(String[] args)
 	{
 		
+		//vueLogin();
 		vuePrincipale();
-		//vueGererSalle();
+
+		
+				
+	}
+	
+	
+	
+	public static void vueLogin(){
+		VueLogin vue = new VueLogin();
 		
 		
 	}
-	
 	public static void vuePrincipale(){
-ModelePrincipale modele = new ModelePrincipale();
+		ModelePlanning modele = new ModelePlanning();
 		
-		ControlleurPrincipale controler = new ControlleurPrincipale(modele);
+		ControlleurPlanning controler = new ControlleurPlanning(modele);
 		
-		VuePrincipale vue = new VuePrincipale(controler);
+		VuePlanning vue = new VuePlanning(controler);
 		
 		modele.addObserver(vue);
 		
 		controler.refresh();
 	}
-	
-	public static void vueGererSalle(){
-		VueGererSalle vue = new VueGererSalle();
-	}
-
 }
