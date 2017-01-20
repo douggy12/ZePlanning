@@ -46,6 +46,8 @@ public class VuePlanning extends JFrame implements MouseListener, Observer, Acti
 	private JPanel navi = new JPanel(); //  pour BoxLayout
 	private JPanel grille = new JPanel(); // pour GridLayout
 	
+	Font dateFont = new Font("Arial", Font.PLAIN, 16);
+	
 	JLabel lundi = new JLabel("lundi",SwingConstants.CENTER);
 	JLabel mardi = new JLabel("mardi",SwingConstants.CENTER);
 	JLabel mercredi = new JLabel("mercredi",SwingConstants.CENTER);
@@ -75,7 +77,7 @@ public class VuePlanning extends JFrame implements MouseListener, Observer, Acti
 	private ArrayList<String> listeJours= new ArrayList<>();
 	private ArrayList<String> listeDates = new ArrayList<>();
 	
-	private Font salleFont = new Font("Arial", Font.BOLD, 24);
+	private Font salleFont = new Font("Arial", Font.BOLD, 18);
 	
 	
 	
@@ -122,9 +124,11 @@ public class VuePlanning extends JFrame implements MouseListener, Observer, Acti
 
 		JMenuItem formateur = new JMenuItem ("Formateur");
 		gerer.add(formateur);
+		formateur.addActionListener(new ajouterFormateur());
 		gerer.addSeparator();
 		JMenuItem promo = new JMenuItem ("Promo");
 		gerer.add(promo);
+		promo.addActionListener(new ajouterPromo());
 		gerer.addSeparator();
 		JMenuItem addSalle = new JMenuItem ("Salle");
 		addSalle.addActionListener(new AjouterSalle());
@@ -161,18 +165,23 @@ public class VuePlanning extends JFrame implements MouseListener, Observer, Acti
 		
 		grille.add(lundi);
 		lundi.setBorder(BorderFactory.createLineBorder(Color.black));
+		lundi.setFont(dateFont);
 		
 		grille.add(mardi);
 		mardi.setBorder(BorderFactory.createLineBorder(Color.black));
+		mardi.setFont(dateFont);
 		
 		grille.add(mercredi);
 		mercredi.setBorder(BorderFactory.createLineBorder(Color.black));
+		mercredi.setFont(dateFont);
 		
 		grille.add(jeudi);
 		jeudi.setBorder(BorderFactory.createLineBorder(Color.black));
+		jeudi.setFont(dateFont);
 		
 		grille.add(vendredi);
 		vendredi.setBorder(BorderFactory.createLineBorder(Color.black));
+		vendredi.setFont(dateFont);
 		
 		/*for (int j=0; j<listeJours.size(); j++)
 		{
@@ -486,6 +495,26 @@ public class VuePlanning extends JFrame implements MouseListener, Observer, Acti
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	class ajouterFormateur implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			VueGererFormateur vueGF = new VueGererFormateur();
+			
+		}
+		
+	}
+	
+	class ajouterPromo implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			VueGererPromo vueGP = new VueGererPromo();
 			
 		}
 		
